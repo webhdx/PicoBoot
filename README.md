@@ -35,6 +35,14 @@ Yes, you can use it with XenoGC intalled.
 
 This project is free and available for everyone. If you want to support it anyway, consider using Sponsor button in the top. You can also buy some of my other mods from my Tindie store.
 
+## Compiling firmware
+
+Make sure your Raspberry Pi Pico environment is set up on your machine, there are many tutorial covering it.
+
+1. `cmake .`
+2. `./process_ipl.py iplboot.dol ipl.h`
+3. `make`
+
 ## Hall of Fame
 
 I'd like to thank people who helped making PicoBoot possible:
