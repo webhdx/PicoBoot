@@ -4,19 +4,7 @@ _deps
 .DS_Store
 
 # Build environment
-build/
-elf2uf2/
-CMakeFiles/
-CMakeCache.txt
-cmake_install.cmake
-generated/
-ipl.h
-Makefile
-pico_sdk_import.cmake
-pico-sdk/
-picoboot.bin
-picoboot.dis
-picoboot.elf.map
-picoboot.hex
-picoboot.uf2
-pioasm/
+firmware/*
+!firmware/CMakeLists.txt
+!firmware/picoboot.c
+!firmware/picoboot.pio
