@@ -86,7 +86,7 @@ def generate_header_file(elements, executable, input_file, output_file, size):
     output += '//\n'
     output += '// Command: {0} {1} {2}\n'.format(executable, input_file, output_file)
     output += '//\n'
-    output += '// File: {0}, size: {1}K\n'.format(input_file, size)
+    output += '// File: {0}, size: {1} bytes\n'.format(input_file, size)
     output += '//\n'
     output += '// File generated on {0}\n'.format(datetime.now().strftime("%d.%m.%Y %H:%M:%S"))
     output += '//\n\n'
@@ -115,7 +115,7 @@ def process_scrambled_ipl(ipl, size):
     out2 = int.from_bytes(ipl, byteorder='big', signed=False)
     out2 = out2 << 1
 
-    binary = ''.join([char*4 for char in format(out2, 'b')])
+    binary = ''.join([char * 4 for char in format(out2, 'b')])
     binary = int(binary, 2)
 
     payload = binary.to_bytes(size * 4, 'big')
@@ -147,26 +147,24 @@ def main():
         print("Invalid entry point and base address (must be 0x81300000)")
         return -1
 
-    ipl = bytearray(0x700)
-    ipl += bytearray(payload_padding)
-    ipl += img
+    payload = bytearray(0x700) + bytearray(payload_padding)+ img
+    payload_size = size + 0x20; # there are 32 bytes of additional padding needed 
 
-    ipl_size = len(ipl)
+    if payload_size % 1024 != 0:
+        new_size_k = math.ceil(payload_size / 1024)
+        new_size = new_size_k * 1024
+        print(f"Payload needs to be aligned to {new_size_k}K")
+        payload += bytearray(new_size - payload_size)
+        payload_size = new_size
 
-    print(f"Output binary size: {ipl_size} bytes ({ipl_size / 1024}K)")
+    print(f"Output binary size: {payload_size} bytes ({payload_size / 1024}K)")
 
-    if ipl_size % 1024 != 0:
-        new_size = math.ceil(ipl_size / 1024)
-        print(f"Payload needs to be aligned to {new_size}K")
-        ipl += bytearray(1024 - (ipl_size % 1024))
-        ipl_size = new_size
+    scrambled_payload = scramble(payload)[0x700:]
+    payload_size = len(scrambled_payload);
 
-    payload = scramble(ipl)[0x700:]
-    payload_size = len(payload);
+    byte_groups = bytes_to_c_array(process_scrambled_ipl(scrambled_payload, payload_size))
 
-    elements = bytes_to_c_array(process_scrambled_ipl(payload, payload_size))
-
-    output = generate_header_file(elements, sys.argv[0], sys.argv[1], sys.argv[2], ipl_size)
+    output = generate_header_file(byte_groups, sys.argv[0], sys.argv[1], sys.argv[2], size)
 
     with open(sys.argv[2], "w") as f:
         f.write(output)
