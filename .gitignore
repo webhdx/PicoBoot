@@ -12,7 +12,7 @@ elf2uf2/
 generated/
 pico-sdk/
 pioasm/
-cmake_install.cmake_install
+cmake_install.cmake
 CMakeCache.txt
 Makefile
 picoboot.bin
@@ -20,3 +20,6 @@ picoboot.dis
 picoboot.elf
 picoboot.elf.map
 picoboot.hex
+picoboot.uf2
+picoboot.pio.h
+ipl.h
