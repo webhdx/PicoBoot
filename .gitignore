@@ -15,4 +15,8 @@ pioasm/
 cmake_install.cmake_install
 CMakeCache.txt
 Makefile
-picoboot.pio.h
+picoboot.bin
+picoboot.dis
+picoboot.elf
+picoboot.elf.map
+picoboot.hex
