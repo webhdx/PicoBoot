@@ -10,7 +10,7 @@
 #include "hardware/clocks.h"
 #include "hardware/dma.h"
 #include "hardware/structs/bus_ctrl.h"
-#include "gcipl.pio.h"
+#include "picoboot.pio.h"
 #include "ipl.h"
 
 const uint PIN_LED = 25;                // Status LED

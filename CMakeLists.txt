@@ -15,10 +15,10 @@ project(picoboot C CXX ASM)
 # Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
 
-add_executable(picoboot picoboot.c)
+add_executable(picoboot src/picoboot.c)
 
 pico_generate_pio_header(picoboot  
-        ${CMAKE_CURRENT_LIST_DIR}/picoboot.pio
+        ${CMAKE_CURRENT_LIST_DIR}/src/picoboot.pio
 )
 
 pico_set_program_name(picoboot "picoboot")
@@ -28,10 +28,8 @@ pico_set_binary_type(picoboot copy_to_ram)
 pico_enable_stdio_uart(picoboot 0)
 pico_enable_stdio_usb(picoboot 1)
 
-target_link_libraries(picoboot 
-    pico_stdlib
-    hardware_pio
-    hardware_dma
-)
+target_include_directories(picoboot PRIVATE src)
+
+target_link_libraries(picoboot PRIVATE pico_stdlib hardware_pio hardware_dma)
 
 pico_add_extra_outputs(picoboot)

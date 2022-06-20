@@ -4,7 +4,15 @@ _deps
 .DS_Store
 
 # Build environment
-firmware/*
-!firmware/CMakeLists.txt
-!firmware/picoboot.c
-!firmware/picoboot.pio
+src/*
+!src/picoboot.c
+!src/picoboot.pio
+CMakeFiles/
+elf2uf2/
+generated/
+pico-sdk/
+pioasm/
+cmake_install.cmake_install
+CMakeCache.txt
+Makefile
+picoboot.pio.h
