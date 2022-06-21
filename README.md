@@ -25,7 +25,7 @@ Sorry. I do not take reponsibility for any damage done by installing this modchi
 
 ### Can I use other RP2040 boards?
 
-Yes, go for it. Just respect the [license agreements](LICENSE) and don't expect me to provide any support for your board. PicoBoot only supports official Raspberry Pi Pico module at the moment. My philosophy is to keep things stupid simple, cheap and available for everyone.
+Yes, go for it. Just respect the [license agreements](LICENSE) and don't expect me to provide any support for your board. PicoBoot only supports official Raspberry Pi Pico module at the moment.
 
 ### Will it work if I have XenoGC installed?
 
@@ -37,11 +37,27 @@ This project is free and available for everyone. If you want to support it anywa
 
 ## Compiling firmware
 
-Make sure your Raspberry Pi Pico environment is set up on your machine, there are many tutorial covering it.
+Make sure your Raspberry Pi Pico environment is set up on your machine.
 
-1. `cmake .`
-2. `./process_ipl.py iplboot.dol ipl.h`
-3. `make`
+Build Makefile and all required build scripts:
+```shell
+# cmake .
+```
+
+Then grab any DOL file you'd like to boot and run processing script:
+```shell
+# ./process_ipl.py iplboot.dol ipl.h
+```
+
+Do not change `ipl.h` output file name.
+
+Once it's ready and `ipl.h` file has been created you can build the firmware:
+
+```shell
+# make
+```
+
+If everything worked you should see new file `picoboot.uf2` created in the main project directory. Now hold `BOOTSEL` button on Raspberry Pi Pico and connect USB cable. New mass storage device will appear. Copy `picoboot.uf2` file to `RPI-RP2` device. Once it's done it'll automatically eject itself. Disconnect the cable and you're all done.
 
 ## Hall of Fame
 
