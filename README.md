@@ -11,7 +11,9 @@ This is a long awaited IPL replacement modchip for Nintendo GameCube. It's open 
 * uses "IPL injection" approach superior to mods like XenoGC
 
 ## Installation guide
-TBA
+
+* [Installation diagram for DOL-001](assets/Installation%20Diagram%20(DOL-001).jpg)
+* [Installation diagram for DOL-101](assets/Installation%20Diagram%20(DOL-101).jpg)
 
 ## FAQ
 
