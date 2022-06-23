@@ -12,10 +12,17 @@ This is a long awaited IPL replacement modchip for Nintendo GameCube. It's open 
 * automatically boots any DOL app of your choice
 * uses "IPL injection" approach superior to mods like XenoGC
 
-## Installation diagrams
+## Installation guide
+
+## Flashing Raspberry Pi Pico board
+
+Go to [Releases page](https://github.com/webhdx/PicoBoot/releases) and download `picoboot.uf2` file from the latest release available. Now connect Raspberry Pi Pico board to the computer while holding `BOOTSEL` button. If it's been done correctly you'll see `RPI-RP2` mass storage device show up. Drag and drop `picoboot.uf2` file to that device. It'll automatically unmount and green LED will light up if it was programmed correctly. Unplug USB cable from Pico and proceed with hardware installation.
+
+## Hardware diagrams
 
 * [Installation diagram for DOL-001](assets/Installation%20Diagram%20(DOL-001).jpg)
 * [Installation diagram for DOL-101](assets/Installation%20Diagram%20(DOL-101).jpg)
+
 
 ## FAQ
 
