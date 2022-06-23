@@ -11,12 +11,12 @@
 #include "hardware/dma.h"
 #include "hardware/structs/bus_ctrl.h"
 #include "picoboot.pio.h"
-#include "ipl.h"
+#include "ipl2.h"
 
 const uint PIN_LED = 25;                // Status LED
 const uint PIN_DATA_BASE = 6;           // Base pin used for output, 4 consecutive pins are used 
-const uint PIN_CS = 19;                 // U10 chip select
-const uint PIN_CLK = 20;                // EXI bus clock line
+const uint PIN_CS = 4;                 // U10 chip select
+const uint PIN_CLK = 5;                // EXI bus clock line
 
 void main()
 {
