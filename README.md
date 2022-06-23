@@ -14,9 +14,18 @@ This is a long awaited IPL replacement modchip for Nintendo GameCube. It's open 
 
 ## Installation guide
 
+## Prerequisites
+* Raspberry Pi Pico
+* memory card adapter: SD Gecko or SD2SP2
+* FAT32 formatted SD card
+
 ## Flashing Raspberry Pi Pico board
 
 Go to [Releases page](https://github.com/webhdx/PicoBoot/releases) and download `picoboot.uf2` file from the latest release available. Now connect Raspberry Pi Pico board to your computer while holding `BOOTSEL` button pressed. If it's been done correctly you'll see `RPI-RP2` mass storage device show up. Drag and drop `picoboot.uf2` file to that device. It'll automatically eject and green LED will light up if it was programmed correctly. Unplug USB cable from Pico and proceed with hardware installation.
+
+## Preparing SD card
+
+Format your SD card to FAT32. Download the latest Swiss release from [here](https://github.com/emukidid/swiss-gc/releases/latest) and grab `swiss_rXXXX.dol` file, rename it to `ipl.dol` and copy to the root of your SD card.
 
 ## Hardware diagrams
 
