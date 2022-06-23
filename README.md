@@ -19,7 +19,7 @@ This is a long awaited IPL replacement modchip for Nintendo GameCube. It's open 
 * [SD Gecko](https://amzn.to/3HPBuwe) or [SD2SP2](https://amzn.to/3I1cCSl)
 * FAT32 formatted SD card
 
-Links above are affiliate and I get small comission from buying these products. Thanks to everyone who used links above 🙏
+Links above are affiliate and I get small comission if you buy these products. Thanks to everyone who used links above 🙏
 
 ## Flashing Raspberry Pi Pico board
 
