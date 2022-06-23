@@ -1,6 +1,6 @@
-# PicoBoot
-
 ![PicoBoot](/assets/PicoBoot.png)
+
+# PicoBoot
 
 This is a long awaited IPL replacement modchip for Nintendo GameCube. It's open source, cheap and easy to install.
 
