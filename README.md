@@ -53,7 +53,7 @@ Yes, you can use it with XenoGC intalled.
 
 ### I appreciate your work. Can I support you in any way?
 
-This project is free and available for everyone. If you want to support it anyway, consider using Sponsor button in the top. You can also buy some of my other mods from my Tindie store.
+This project is free and available for everyone. If you want to support it anyway, consider using [:heart: Sponsor](https://github.com/sponsors/webhdx) button.
 
 ## Compiling firmware
 
