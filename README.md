@@ -16,7 +16,7 @@ This is a long awaited IPL replacement modchip for Nintendo GameCube. It's open 
 
 ## Flashing Raspberry Pi Pico board
 
-Go to [Releases page](https://github.com/webhdx/PicoBoot/releases) and download `picoboot.uf2` file from the latest release available. Now connect Raspberry Pi Pico board to the computer while holding `BOOTSEL` button. If it's been done correctly you'll see `RPI-RP2` mass storage device show up. Drag and drop `picoboot.uf2` file to that device. It'll automatically unmount and green LED will light up if it was programmed correctly. Unplug USB cable from Pico and proceed with hardware installation.
+Go to [Releases page](https://github.com/webhdx/PicoBoot/releases) and download `picoboot.uf2` file from the latest release available. Now connect Raspberry Pi Pico board to your computer while holding `BOOTSEL` button pressed. If it's been done correctly you'll see `RPI-RP2` mass storage device show up. Drag and drop `picoboot.uf2` file to that device. It'll automatically eject and green LED will light up if it was programmed correctly. Unplug USB cable from Pico and proceed with hardware installation.
 
 ## Hardware diagrams
 
