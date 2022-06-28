@@ -87,7 +87,8 @@ I'd like to thank people who helped making PicoBoot possible:
 * #gc-forever crew: [Extrems](https://github.com/Extrems), [novenary](https://github.com/9ary), [emu_kidid](https://github.com/emukidid) and others 
 * [tmbinc](https://github.com/tmbinc) - he started it all 🙏 
 * happy_bunny - I started my research with his great writeup on [Shuriken Attack](https://www.retro-system.com/shuriken_attack.htm)
-* beta testers: [seewood](https://github.com/seewood), [MethodOrMadness](https://github.com/MethodOrMadness), bela lugosi, 
+* beta testers: [seewood](https://github.com/seewood), [MethodOrMadness](https://github.com/MethodOrMadness), [renanbianchi](https://github.com/renanbianchi)
+* content creators: [MachoNachoProductions](https://www.youtube.com/c/MachoNachoProductions)
 * people who sponsored this project
 * every PicoBoot enjoyer - it's all about you after all 😉
 
