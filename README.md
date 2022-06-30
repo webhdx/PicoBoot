@@ -12,14 +12,19 @@ This is a long awaited IPL replacement modchip for Nintendo GameCube. It's open 
 * automatically boots any DOL app of your choice
 * uses "IPL injection" approach superior to mods like XenoGC
 
-## Installation guide
+## Video guides and overview of the features
+
+[![PicoBoot Modchip Will Unleash The POWER of Your Nintendo GAMECUBE! | Installation Guide and Overview
+](http://img.youtube.com/vi/qwL4ZSa0xMo/0.jpg)](https://www.youtube.com/watch?v=qwL4ZSa0xMo "PicoBoot Modchip Will Unleash The POWER of Your Nintendo GAMECUBE! | Installation Guide and Overview") [![This new Gamecube Modchip is a GAMECHANGER - PicoBoot](http://img.youtube.com/vi/lfMTLEM0yeQ/0.jpg)](https://www.youtube.com/watch?v=lfMTLEM0yeQ "This new Gamecube Modchip is a GAMECHANGER - PicoBoot")
+
+## 🛠 Installation guide
 
 ## Prerequisites
 * [Raspberry Pi Pico](https://amzn.to/3nc12du)
 * [SD Gecko](https://amzn.to/3HPBuwe) or [SD2SP2](https://amzn.to/3I1cCSl)
 * FAT32 formatted SD card
 
-Links above are affiliate and I get small comission if you buy these products. Thanks to everyone who used links above 🙏
+Links above are affiliate and I get small comission 💵 if you buy these products. Thanks to everyone who used links above 🙏
 
 ## Flashing Raspberry Pi Pico board
 
@@ -88,7 +93,7 @@ I'd like to thank people who helped making PicoBoot possible:
 * [tmbinc](https://github.com/tmbinc) - he started it all 🙏 
 * happy_bunny - I started my research with his great writeup on [Shuriken Attack](https://www.retro-system.com/shuriken_attack.htm)
 * beta testers: [seewood](https://github.com/seewood), [MethodOrMadness](https://github.com/MethodOrMadness), [renanbianchi](https://github.com/renanbianchi)
-* content creators: [MachoNachoProductions](https://www.youtube.com/c/MachoNachoProductions)
+* content creators: [MachoNachoProductions](https://www.youtube.com/c/MachoNachoProductions), [RockerGaming](https://www.youtube.com/c/RockerGaming)
 * people who sponsored this project
 * every PicoBoot enjoyer - it's all about you after all 😉
 
