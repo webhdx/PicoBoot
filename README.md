@@ -14,15 +14,17 @@ This is a long awaited IPL replacement modchip for Nintendo GameCube. It's open 
 
 ## Video guides and overview of the features
 
-[![PicoBoot Modchip Will Unleash The POWER of Your Nintendo GAMECUBE! | Installation Guide and Overview
-](http://img.youtube.com/vi/qwL4ZSa0xMo/0.jpg)](https://www.youtube.com/watch?v=qwL4ZSa0xMo "PicoBoot Modchip Will Unleash The POWER of Your Nintendo GAMECUBE! | Installation Guide and Overview") [![This new Gamecube Modchip is a GAMECHANGER - PicoBoot](http://img.youtube.com/vi/lfMTLEM0yeQ/0.jpg)](https://www.youtube.com/watch?v=lfMTLEM0yeQ "This new Gamecube Modchip is a GAMECHANGER - PicoBoot")
+- [PicoBoot Modchip Will Unleash The POWER of Your Nintendo GAMECUBE! | Installation Guide and Overview](https://www.youtube.com/watch?v=qwL4ZSa0xMo) by [MachoNachoProductions](https://www.youtube.com/c/MachoNachoProductions)
+- [This new Gamecube Modchip is a GAMECHANGER - PicoBoot](https://www.youtube.com/watch?v=lfMTLEM0yeQ) by [RockerGaming](https://www.youtube.com/c/RockerGaming)
+- [$5 Gamecube IPL Modchip?! Picoboot Dol-001 + Dol-101 Installation / Setup / Showcase](https://www.youtube.com/watch?v=W_9-mSBMBJ4) by [ModzvilleUSA!](https://www.youtube.com/watch?v=W_9-mSBMBJ4)
 
 ## 🛠 Installation guide
 
 ## Prerequisites
+
 * [Raspberry Pi Pico](https://amzn.to/3nc12du)
 * [SD Gecko](https://amzn.to/3HPBuwe) or [SD2SP2](https://amzn.to/3I1cCSl)
-* FAT32 formatted SD card
+* FAT32 or exFAT formatted SD card
 
 Links above are affiliate and I get small comission 💵 if you buy these products. Thanks to everyone who used links above 🙏
 
@@ -32,7 +34,7 @@ Go to [the latest release page](https://github.com/webhdx/PicoBoot/releases/late
 
 ## Preparing SD card
 
-Format your SD card to FAT32. Download the latest Swiss release from [here](https://github.com/emukidid/swiss-gc/releases/latest) and grab `swiss_rXXXX.dol` file, rename it to `ipl.dol` and copy to the root of your SD card.
+Format your SD card to FAT32 or exFAT. Download the latest Swiss release from [here](https://github.com/emukidid/swiss-gc/releases/latest) and grab `swiss_rXXXX.dol` file, rename it to `ipl.dol` and copy to the root of your SD card.
 
 ## Hardware diagrams
 
@@ -93,7 +95,7 @@ I'd like to thank people who helped making PicoBoot possible:
 * [tmbinc](https://github.com/tmbinc) - he started it all 🙏 
 * happy_bunny - I started my research with his great writeup on [Shuriken Attack](https://www.retro-system.com/shuriken_attack.htm)
 * beta testers: [seewood](https://github.com/seewood), [MethodOrMadness](https://github.com/MethodOrMadness), [renanbianchi](https://github.com/renanbianchi)
-* content creators: [MachoNachoProductions](https://www.youtube.com/c/MachoNachoProductions), [RockerGaming](https://www.youtube.com/c/RockerGaming)
+* content creators: [MachoNachoProductions](https://www.youtube.com/c/MachoNachoProductions), [RockerGaming](https://www.youtube.com/c/RockerGaming), [ModzvilleUSA!](https://www.youtube.com/watch?v=W_9-mSBMBJ4)
 * people who sponsored this project
 * every PicoBoot enjoyer - it's all about you after all 😉
 
