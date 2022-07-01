@@ -16,7 +16,7 @@ This is a long awaited IPL replacement modchip for Nintendo GameCube. It's open 
 
 - [PicoBoot Modchip Will Unleash The POWER of Your Nintendo GAMECUBE! | Installation Guide and Overview](https://www.youtube.com/watch?v=qwL4ZSa0xMo) by [MachoNachoProductions](https://www.youtube.com/c/MachoNachoProductions)
 - [This new Gamecube Modchip is a GAMECHANGER - PicoBoot](https://www.youtube.com/watch?v=lfMTLEM0yeQ) by [RockerGaming](https://www.youtube.com/c/RockerGaming)
-- [$5 Gamecube IPL Modchip?! Picoboot Dol-001 + Dol-101 Installation / Setup / Showcase](https://www.youtube.com/watch?v=W_9-mSBMBJ4) by [ModzvilleUSA!](https://www.youtube.com/watch?v=W_9-mSBMBJ4)
+- [$5 Gamecube IPL Modchip?! Picoboot Dol-001 + Dol-101 Installation / Setup / Showcase](https://www.youtube.com/watch?v=W_9-mSBMBJ4) by [ModzvilleUSA!](https://www.youtube.com/c/ModzvilleUSA)
 
 ## 🛠 Installation guide
 
@@ -95,7 +95,7 @@ I'd like to thank people who helped making PicoBoot possible:
 * [tmbinc](https://github.com/tmbinc) - he started it all 🙏 
 * happy_bunny - I started my research with his great writeup on [Shuriken Attack](https://www.retro-system.com/shuriken_attack.htm)
 * beta testers: [seewood](https://github.com/seewood), [MethodOrMadness](https://github.com/MethodOrMadness), [renanbianchi](https://github.com/renanbianchi)
-* content creators: [MachoNachoProductions](https://www.youtube.com/c/MachoNachoProductions), [RockerGaming](https://www.youtube.com/c/RockerGaming), [ModzvilleUSA!](https://www.youtube.com/watch?v=W_9-mSBMBJ4)
+* content creators: [MachoNachoProductions](https://www.youtube.com/c/MachoNachoProductions), [RockerGaming](https://www.youtube.com/c/RockerGaming), [ModzvilleUSA!](https://www.youtube.com/c/ModzvilleUSA)
 * people who sponsored this project
 * every PicoBoot enjoyer - it's all about you after all 😉
 
