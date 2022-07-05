@@ -11,7 +11,7 @@
 #include "hardware/dma.h"
 #include "hardware/structs/bus_ctrl.h"
 #include "picoboot.pio.h"
-#include "ipl2.h"
+#include "ipl.h"
 
 const uint PIN_LED = 25;                // Status LED
 const uint PIN_DATA_BASE = 6;           // Base pin used for output, 4 consecutive pins are used 
