@@ -20,7 +20,7 @@ This is a long awaited IPL replacement modchip for Nintendo GameCube. It's open 
 
 ## 🛠 Installation guide
 
-## Prerequisites
+## 1. Prerequisites
 
 * [Raspberry Pi Pico](https://amzn.to/3nc12du)
 * [SD Gecko](https://amzn.to/3HPBuwe) or [SD2SP2](https://amzn.to/3I1cCSl)
@@ -28,18 +28,17 @@ This is a long awaited IPL replacement modchip for Nintendo GameCube. It's open 
 
 Links above are affiliate and I get small comission 💵 if you buy these products. Thanks to everyone who used links above 🙏
 
-## Flashing Raspberry Pi Pico board
+## 2. Flashing Raspberry Pi Pico board
 
 Go to [the latest release page](https://github.com/webhdx/PicoBoot/releases/latest) and download `picoboot.uf2` file. Now connect Raspberry Pi Pico board to your computer while holding `BOOTSEL` button pressed. If it's been done correctly you'll see `RPI-RP2` mass storage device show up. Drag and drop `picoboot.uf2` file to that device. It'll automatically eject and green LED will light up if it was programmed correctly. Unplug USB cable from Pico and proceed with hardware installation.
 
-## Preparing SD card
+## 3. Preparing SD card
 
 Format your SD card to FAT32 or exFAT. Download the latest Swiss release from [here](https://github.com/emukidid/swiss-gc/releases/latest) and grab `swiss_rXXXX.dol` file, rename it to `ipl.dol` and copy to the root of your SD card.
 
-## Hardware diagrams
+## 4. Hardware installation
 
-* [Installation diagram for DOL-001](assets/Installation%20Diagram%20(DOL-001).jpg)
-* [Installation diagram for DOL-101](assets/Installation%20Diagram%20(DOL-101).jpg)
+![Wiring diagram](assets/Wiring%20diagram.jpg)
 
 
 ## FAQ
