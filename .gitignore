@@ -2,6 +2,7 @@
 .vscode
 _deps
 .DS_Store
+.history
 
 # Build environment
 src/*
@@ -24,3 +25,6 @@ picoboot.uf2
 picoboot.pio.h
 ipl.h
 *.dol
+
+# Docs
+docs/_site/
