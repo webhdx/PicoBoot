@@ -22,7 +22,7 @@ This is a long awaited IPL replacement modchip for Nintendo GameCube. It's open 
 
 ## 1. Prerequisites
 
-* [Raspberry Pi Pico](https://amzn.to/3nc12du)
+* Raspberry Pi Pico ([Amazon](https://amzn.to/3JbIsMw), [AliExpress](https://s.click.aliexpress.com/e/_DkGpnTv))
 * SD Gecko/WiiSD ([Amazon](https://amzn.to/3cPCEMs), [AliExpress](https://s.click.aliexpress.com/e/_Dm43n6J)) or SD2SP2 ([Amazon](https://amzn.to/3I1cCSl), [AliExpress](https://amzn.to/3PNamBe))
 * FAT32 or exFAT formatted SD card
 
