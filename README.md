@@ -41,4 +41,3 @@ I'd like to thank people who helped making PicoBoot possible:
 
 Some parts of this project use GPL-2.0 licensed code from:
  * https://github.com/redolution/iplboot
- * https://github.com/seewood/iplboot
