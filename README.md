@@ -22,6 +22,10 @@ This is a long awaited IPL replacement modchip for Nintendo GameCube. It's open 
 
 Head over to [the wiki](https://github.com/webhdx/PicoBoot/wiki) for installation guide and troubleshooting tips.
 
+## I appreciate your work. Can I support you in any way?
+
+This project is free and available for everyone. If you want to support it anyway, consider using [:heart: Sponsor](https://github.com/sponsors/webhdx) button.
+
 ## Hall of Fame
 
 I'd like to thank people who helped making PicoBoot possible:
