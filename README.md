@@ -20,7 +20,7 @@ This is a long awaited IPL replacement modchip for Nintendo GameCube. It's open 
 
 ## Installation guide
 
-Head over to [the wiki](https://github.com/webhdx/PicoBoot/wiki) for installation guide and troubleshooting tips.
+Head over to [the wiki](https://github.com/webhdx/PicoBoot/wiki) for [Installation guide](../../wiki/Installation-guide) and [Troubleshooting tips](../../wiki/Troubleshooting-tips).
 
 ## I appreciate your work. Can I support you in any way?
 
