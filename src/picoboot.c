@@ -11,26 +11,113 @@
 #include "hardware/dma.h"
 #include "hardware/structs/bus_ctrl.h"
 #include "picoboot.pio.h"
+#include "ws2812.pio.h"
 #include "ipl.h"
 
-const uint PIN_LED = 25;                // Status LED
+const uint PIN_LED = 16;                // Status LED
 const uint PIN_DATA_BASE = 6;           // Base pin used for output, 4 consecutive pins are used 
 const uint PIN_CS = 4;                 // U10 chip select
 const uint PIN_CLK = 5;                // EXI bus clock line
+const uint DEFAULT_CLOCK = 125000;
 
-void main()
+uint32_t pixel_color = 0;
+uint8_t pixel_brightness = 255;
+
+/* Simple ws2812 implementation from https://github.com/ForsakenNGS/Pico_WS2812 */
+void init_ws2812(PIO pio, uint sm)
 {
-    // Initialize and light up builtin LED, it will basically
-    // act as a power LED.
-    // TODO: Use the LED to signalize system faults?
-    gpio_init(PIN_LED);
-    gpio_set_dir(PIN_LED, GPIO_OUT);
-    gpio_put(PIN_LED, true);
+    uint offset = pio_add_program(pio, &ws2812_program);
+    const uint bits = 24; // RGB
+    ws2812_program_init(pio, sm, offset, PIN_LED, 800000, bits);
+}
 
+void hsv_to_rgb(uint8_t hue, uint8_t saturation, uint8_t value, uint8_t* red, uint8_t* green, uint8_t* blue)
+{
+    if (saturation == 0) 
+    {
+        *red = 0;
+        *green = 0;
+        *blue = 0;
+        return;
+    }
+    
+    uint8_t quadrant = hue / 43;
+    uint8_t remainder = (hue - (quadrant * 43)) * 6;
+    uint8_t p = (value * (255 - saturation)) >> 8;
+    uint8_t q = (value * (255 - ((saturation * remainder) >> 8))) >> 8;
+    uint8_t t = (value * (255 - ((saturation * (255 - remainder)) >> 8))) >> 8;
+    switch (quadrant) {
+        case 0:
+            *red = value;
+            *green = t;
+            *blue = p;
+            return;
+        case 1:
+            *red = q;
+            *green = value;
+            *blue = p;
+            return;
+        case 2:
+            *red = p;
+            *green = value;
+            *blue = t;
+            return;
+        case 3:
+            *red = p;
+            *green = q;
+            *blue = value;
+            return;
+        case 4:
+            *red = t;
+            *green = p;
+            *blue = value;
+            return;
+        default:
+        case 5:
+            *red = value;
+            *green = p;
+            *blue = q;
+            return;
+    }
+}
+
+void set_ws2812_brightness(uint8_t brightness)
+{
+    pixel_brightness = brightness;
+}
+
+void set_ws2812_color(uint8_t r, uint8_t g, uint8_t b)
+{
+    // GRBW
+    g = (g * pixel_brightness) >> 8;
+    r = (r * pixel_brightness) >> 8;
+    b = (b * pixel_brightness) >> 8;
+    pixel_color = (g << 24 | r << 16 | b << 8) & 0xFFFFFF00;
+}
+
+void show_ws2812(PIO pio, uint sm)
+{
+    pio_sm_put_blocking(pio, sm, pixel_color);
+}
+
+int main()
+{
     // Set 250MHz clock to get more cycles in between CLK pulses.
     // This is the lowest value I was able to make the code work.
     // Should be still considered safe for most Pico boards.
+    //printf("Set system clock to 250MHz\n");
     set_sys_clock_khz(250000, true);
+
+    // Initialize and light up builtin LED, it will basically
+    // act as a power LED.
+    init_ws2812(pio1, 0);
+    set_ws2812_brightness(64);
+
+    uint8_t r = 255, g = 0, b = 0;
+    set_ws2812_color(r, g, b);
+    show_ws2812(pio1, 0);
+
+   
 
     // Prioritize DMA engine as it does the most work
     bus_ctrl_hw->priority = BUSCTRL_BUS_PRIORITY_DMA_W_BITS | BUSCTRL_BUS_PRIORITY_DMA_R_BITS;
@@ -103,7 +190,25 @@ void main()
     pio_sm_set_enabled(pio, transfer_start_sm, true);
     pio_sm_set_enabled(pio, clocked_output_sm, true);
 
-    while (true) {
+    // Wait for the DMA to finish.
+    dma_channel_wait_for_finish_blocking(chan);
+
+    // lower clock to normal
+    set_sys_clock_khz(DEFAULT_CLOCK, true);
+
+    // Successful DMAed, bring up the LED wheel
+    uint8_t hue = 0;
+    while(true)
+    {
         tight_loop_contents();
+
+        hsv_to_rgb(hue, 255, 255, &r, &g, &b);
+        set_ws2812_color(r, g, b);
+        show_ws2812(pio1, 0);
+
+        sleep_ms(10);
+        hue += 1;
     }
+
+    return 0;
 }
