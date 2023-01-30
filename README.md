@@ -4,9 +4,12 @@
 
 This is a long awaited IPL replacement modchip for Nintendo GameCube. It's open source, cheap and easy to install.
 
+## Difference from the original Picoboot
+webhdx's PicoBoot: https://github.com/webhdx/PicoBoot doesn't support boards other than the official Raspberry Pi Pico. This repository enables the led support on RP2040 Zero board.
+
 ## Features
 * it's open source
-* uses $4 Raspberry Pi Pico board
+* uses Raspberry RP2040 microcontroller powered RP2040 Zero board
 * very easy installation, only 5 wires to solder
 * programmable via USB cable, without any drivers and programs
 * automatically boots any DOL app of your choice
