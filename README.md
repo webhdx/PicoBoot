@@ -1,4 +1,4 @@
-![PicoBoot](/assets/PicoBoot.png)
+![PicoBoot](/assets/picobootv2.png)
 
 # PicoBoot
 
