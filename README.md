@@ -8,7 +8,7 @@ This is a fork of the long awaited IPL replacement modchip for Nintendo GameCube
 * it's open source
 * very easy installation
 * programmable via USB cable, without any drivers and programs
-* board files available to spin up your own, or buy pre-made the choice is yours!
+* board files available to spin up your own, or buy [pre-made](https://www.pcbway.com/project/shareproject/RP2040_GC_Modchip_V1_Board_659bb2e2.html) the choice is yours!
 * automatically boots any DOL app of your choice
 * uses "IPL injection" approach superior to mods like XenoGC
 
@@ -19,7 +19,5 @@ Head over to [the wiki](https://github.com/webhdx/PicoBoot/wiki) for [Installati
 ## Acknowledgements
 
 Some parts of this project use GPL-2.0 licensed code from:
- * https://github.com/redolution/iplboot
- 
- The original PicoBoot that this project is based off of
- https://github.com/webhdx/PicoBoot
+ * https://github.com/redolution/iplboot 
+ * [The original PicoBoot](https://github.com/webhdx/PicoBoot) that this project is based off of
