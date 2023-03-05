@@ -2,7 +2,7 @@
 
 # PicoBoot
 
-This is a fork of the long awaited IPL replacement modchip for Nintendo GameCube, PicoBoot. It's open source, cheap and easy to install.
+This is a long awaited IPL replacement modchip for Nintendo GameCube. It's open source, cheap and easy to install.
 
 ## Features
 * it's open source
