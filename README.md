@@ -6,6 +6,7 @@ This is a fork of the long awaited IPL replacement modchip for Nintendo GameCube
 
 ## Features
 * it's open source
+* uses $4 Raspberry Pi Pico board or standalone board
 * very easy installation
 * programmable via USB cable, without any drivers and programs
 * board files available to spin up your own, or buy [pre-made](https://www.pcbway.com/project/shareproject/RP2040_GC_Modchip_V1_Board_659bb2e2.html) the choice is yours!
