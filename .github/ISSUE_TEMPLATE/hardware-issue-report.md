@@ -7,12 +7,9 @@ assignees: webhdx
 
 ---
 
-| Answer some general questions first                             	|  	|
-|:-------------------------------------------------------------------	|:------:	|
-| Which firmware version are you using?                             	| `v0.1` 	|
-| Did you compile it yourself?                             	| yes/no 	|
-| Do you use alternative install method not mentioned in the guide? 	| yes/no 	|
-| Are you using official Raspberry Pi Pico board?                   	| yes/no 	|
-| Did you pay someone to install it for you?                        	| yes/no 	|
+| Answer some general questions first                             	  |  	     |
+|:-------------------------------------------------------------------	|:------:|
+| Which firmware version are you using?                             	| `v0.2` |
+| Are you using the official Raspberry Pi Pico board?                 | yes/no |
 
 <!-- Now describe problem you're experiencing. Include soldering photos if you want to get the issue resolved -->

@@ -20,6 +20,7 @@ webhdx's PicoBoot: https://github.com/webhdx/PicoBoot doesn't support boards oth
 - [PicoBoot Modchip Will Unleash The POWER of Your Nintendo GAMECUBE! | Installation Guide and Overview](https://www.youtube.com/watch?v=qwL4ZSa0xMo) by [MachoNachoProductions](https://www.youtube.com/c/MachoNachoProductions)
 - [This new Gamecube Modchip is a GAMECHANGER - PicoBoot](https://www.youtube.com/watch?v=lfMTLEM0yeQ) by [RockerGaming](https://www.youtube.com/c/RockerGaming)
 - [$5 Gamecube IPL Modchip?! Picoboot Dol-001 + Dol-101 Installation / Setup / Showcase](https://www.youtube.com/watch?v=W_9-mSBMBJ4) by [ModzvilleUSA!](https://www.youtube.com/c/ModzvilleUSA)
+- [PicoBoot GameCube custom mod chip - make and install your own chip with a Raspberry Pi Pico](https://youtu.be/rDrosSd-nDc) by [Joe Bleeps](https://www.youtube.com/@JoeBleeps)
 
 ## Installation guide
 
