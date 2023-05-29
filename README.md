@@ -1,8 +1,14 @@
-![PicoBoot](/assets/PicoBoot.png)
+<img src="/assets/PicoBoot.png" alt="PicoBoot" align="left"/>
+
 
 # PicoBoot
 
 This is a long awaited IPL replacement modchip for Nintendo GameCube. It's open source, cheap and easy to install.
+
+
+Join Discord Server to get support and discuss new features:
+
+[![](https://dcbadge.vercel.app/api/server/USmzJteq)](https://discord.gg/USmzJteq)
 
 ## Features
 * it's open source
