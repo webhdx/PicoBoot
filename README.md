@@ -8,7 +8,7 @@ This is a long awaited IPL replacement modchip for Nintendo GameCube. It's open 
 
 Join Discord Server to get support and discuss new features:
 
-[![](https://dcbadge.vercel.app/api/server/fEhyWRPCmb)](https://discord.gg/fEhyWRPCmb)
+[![](https://dcbadge.vercel.app/api/server/fEhyWRPCmb)](https://click.webhdx.dev/discord)
 
 ## Features
 * it's open source
