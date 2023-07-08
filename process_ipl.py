@@ -125,6 +125,7 @@ def process_scrambled_ipl(ipl, size):
 def main():
     if len(sys.argv) != 4:
         print(f"Usage: {sys.argv[0]} <executable> <output>")
+        return -1
 
     with open(sys.argv[1], "rb") as f:
         exe = bytearray(f.read())
