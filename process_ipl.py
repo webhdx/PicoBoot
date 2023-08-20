@@ -123,7 +123,7 @@ def process_scrambled_ipl(ipl, size):
     return payload
     
 def main():
-    if len(sys.argv) != 4:
+    if len(sys.argv) != 3:
         print(f"Usage: {sys.argv[0]} <executable> <output>")
         return -1
 
