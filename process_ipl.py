@@ -115,10 +115,7 @@ def process_scrambled_ipl(ipl, size):
     out2 = int.from_bytes(ipl, byteorder='big', signed=False)
     out2 = out2 << 1
 
-    binary = ''.join([char * 4 for char in format(out2, 'b')])
-    binary = int(binary, 2)
-
-    payload = binary.to_bytes(size * 4, 'big')
+    payload = out2.to_bytes(size, 'big')
     
     return payload
     
