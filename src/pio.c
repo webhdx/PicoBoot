@@ -38,20 +38,17 @@ void clocked_output_program_init(PIO pio, uint sm, uint offset, uint data_pin, u
     pio_gpio_init(pio, cs_pin);
 
     pio_gpio_init(pio, data_pin);
-    pio_gpio_init(pio, data_pin + 1);
-    pio_gpio_init(pio, data_pin + 2);
-    pio_gpio_init(pio, data_pin + 3);
 
     sm_config_set_jmp_pin(&c, clk_pin);
     sm_config_set_in_pins(&c, cs_pin);
 
     // Out and Set pins have to overlap so we can make line floating (=set it as input)
-    sm_config_set_out_pins(&c, data_pin, 4);
-    sm_config_set_set_pins(&c, data_pin, 4);
+    sm_config_set_out_pins(&c, data_pin, 1);
+    sm_config_set_set_pins(&c, data_pin, 1);
 
     pio_sm_set_consecutive_pindirs(pio, sm, cs_pin, 2, false); // Set CS and CLK as inputs
 
-    pio_sm_set_consecutive_pindirs(pio, sm, data_pin, 4, false);
+    pio_sm_set_consecutive_pindirs(pio, sm, data_pin, 1, false);
 
     // Shift to right, autopull with threshold 32
     sm_config_set_out_shift(&c, false, true, 32);

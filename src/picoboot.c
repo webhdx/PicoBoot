@@ -15,7 +15,7 @@
 #include "ipl.h"
 
 const uint PIN_LED = 25;                // Status LED
-const uint PIN_DATA_BASE = 6;           // Base pin used for output, 4 consecutive pins are used 
+const uint PIN_DI = 6;                  // Data output
 const uint PIN_CS = 4;                 // U10 chip select
 const uint PIN_CLK = 5;                // EXI bus clock line
 
@@ -36,15 +36,8 @@ void main()
     // Prioritize DMA engine as it does the most work
     bus_ctrl_hw->priority = BUSCTRL_BUS_PRIORITY_DMA_W_BITS | BUSCTRL_BUS_PRIORITY_DMA_R_BITS;
 
-    gpio_set_slew_rate(PIN_DATA_BASE, GPIO_SLEW_RATE_FAST);
-    gpio_set_slew_rate(PIN_DATA_BASE + 1, GPIO_SLEW_RATE_FAST);
-    gpio_set_slew_rate(PIN_DATA_BASE + 2, GPIO_SLEW_RATE_FAST);
-    gpio_set_slew_rate(PIN_DATA_BASE + 3, GPIO_SLEW_RATE_FAST);
-
-    gpio_set_drive_strength(PIN_DATA_BASE, GPIO_DRIVE_STRENGTH_4MA);
-    gpio_set_drive_strength(PIN_DATA_BASE + 1, GPIO_DRIVE_STRENGTH_4MA);
-    gpio_set_drive_strength(PIN_DATA_BASE + 2, GPIO_DRIVE_STRENGTH_4MA);
-    gpio_set_drive_strength(PIN_DATA_BASE + 3, GPIO_DRIVE_STRENGTH_4MA);
+    gpio_set_slew_rate(PIN_DI, GPIO_SLEW_RATE_FAST);
+    gpio_set_drive_strength(PIN_DI, GPIO_DRIVE_STRENGTH_8MA);
 
     PIO pio = pio0;
 
@@ -58,7 +51,7 @@ void main()
     uint transfer_start_sm = pio_claim_unused_sm(pio, true);
     uint transfer_start_offset = pio_add_program(pio, &on_transfer_program);
 
-    on_transfer_program_init(pio, transfer_start_sm, transfer_start_offset, PIN_CLK, PIN_CS, PIN_DATA_BASE);
+    on_transfer_program_init(pio, transfer_start_sm, transfer_start_offset, PIN_CLK, PIN_CS, PIN_DI);
 
     pio_sm_put(pio, transfer_start_sm, (uint32_t) 224); // CS pulses
     pio_sm_exec(pio, transfer_start_sm, pio_encode_pull(true, true));
@@ -75,7 +68,7 @@ void main()
     uint clocked_output_sm = pio_claim_unused_sm(pio, true);
     uint clocked_output_offset = pio_add_program(pio, &clocked_output_program);
 
-    clocked_output_program_init(pio, clocked_output_sm, clocked_output_offset, PIN_DATA_BASE, PIN_CLK, PIN_CS);
+    clocked_output_program_init(pio, clocked_output_sm, clocked_output_offset, PIN_DI, PIN_CLK, PIN_CS);
 
     pio_sm_put(pio, clocked_output_sm, 8191); // 8192 bits, 1024 bytes, minus 1 because counting starts from 0 
     pio_sm_exec(pio, clocked_output_sm, pio_encode_pull(true, true));
