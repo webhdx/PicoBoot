@@ -105,20 +105,6 @@ def generate_header_file(elements, executable, input_file, output_file, size):
 
     return output
 
-def process_scrambled_ipl(ipl, size):
-    """Does additional processing to scrambled IPL payload.
-
-    Payload used by PicoBoot has to be preprocessed. 
-    Whole payload has to be aligned to 1K blocks then every bit needs to be duplicated 4 times.
-    """
-    
-    out2 = int.from_bytes(ipl, byteorder='big', signed=False)
-    out2 = out2 << 1
-
-    payload = out2.to_bytes(size, 'big')
-    
-    return payload
-    
 def main():
     if len(sys.argv) != 3:
         print(f"Usage: {sys.argv[0]} <executable> <output>")
@@ -160,7 +146,7 @@ def main():
     scrambled_payload = scramble(payload)[0x700:]
     payload_size = len(scrambled_payload);
 
-    byte_groups = bytes_to_c_array(process_scrambled_ipl(scrambled_payload, payload_size))
+    byte_groups = bytes_to_c_array(scrambled_payload)
 
     output = generate_header_file(byte_groups, sys.argv[0], sys.argv[1], sys.argv[2], size)
 
