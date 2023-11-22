@@ -34,6 +34,9 @@ wait_bit:
     mov x, y                    ; Copy y value to x, it represents number of bits in the transfer
     set pindirs 0b10001         ; Set data line as output
 
+    out pins, 1                 ; Output single IPL bit
+    jmp x-- on_rising_edge      ; Decrement x
+
 on_rising_edge:
     wait 0 gpio CLK_PIN         ; Sample until rising edge on CLK line
     wait 1 gpio CLK_PIN
