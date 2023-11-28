@@ -46,7 +46,9 @@ void clocked_output_program_init(PIO pio, uint sm, uint offset, uint data_pin, u
     sm_config_set_out_pins(&c, data_pin, 1);
     sm_config_set_set_pins(&c, data_pin, 1);
 
-    pio_sm_set_consecutive_pindirs(pio, sm, cs_pin, 2, false); // Set CS and CLK as inputs
+    // Set CS and CLK as inputs
+    pio_sm_set_consecutive_pindirs(pio, sm, cs_pin, 1, false);
+    pio_sm_set_consecutive_pindirs(pio, sm, clk_pin, 1, false);
 
     pio_sm_set_consecutive_pindirs(pio, sm, data_pin, 1, false);
 
