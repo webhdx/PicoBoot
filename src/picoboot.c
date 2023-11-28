@@ -12,12 +12,45 @@
 #include "hardware/structs/bus_ctrl.h"
 #include "pio.h"
 #include "picoboot.pio.h"
-#include "ipl.h"
+#include "endian.h"
 
 const uint PIN_LED = 25;                // Status LED
 const uint PIN_DI = 6;                  // Data output
 const uint PIN_CS = 4;                 // U10 chip select
 const uint PIN_CLK = 5;                // EXI bus clock line
+
+extern const uint32_t __payload[];
+extern const uint32_t __payload_end[];
+
+const uint32_t payload_magic0 = 0x49504C42; // "IPLB"
+const uint32_t payload_magic1 = 0x4F4F5420; // "OOT "
+const uint32_t payload_magic2 = 0x5049434F; // "PICO"
+
+size_t validate_payload() {
+    if (BigEndian32(__payload[0]) != payload_magic0) {
+        goto bad;
+    }
+    if (BigEndian32(__payload[1]) != payload_magic1) {
+        goto bad;
+    }
+
+    size_t size = BigEndian32(__payload[2]) / sizeof(__payload[0]);
+    size_t alignment = 1024 / sizeof(__payload[0]);
+    size_t size_aligned = (size + alignment - 1) / alignment * alignment;
+
+    if (&__payload[size_aligned] > __payload_end) {
+        goto bad;
+    }
+
+    if (BigEndian32(__payload[size - 1]) != payload_magic2) {
+        goto bad;
+    }
+
+    return size_aligned;
+
+bad:
+    return SIZE_MAX;
+}
 
 void main()
 {
@@ -27,6 +60,14 @@ void main()
     gpio_init(PIN_LED);
     gpio_set_dir(PIN_LED, GPIO_OUT);
     gpio_put(PIN_LED, true);
+
+    size_t payload_size = validate_payload();
+    if (payload_size == SIZE_MAX) {
+        while (true) {
+            sleep_ms(500);
+            gpio_xor_mask(1 << PIN_LED);
+        }
+    }
 
     // Set 250MHz clock to get more cycles in between CLK pulses.
     // This is the lowest value I was able to make the code work.
@@ -83,13 +124,14 @@ void main()
     channel_config_set_read_increment(&c, true);
     channel_config_set_write_increment(&c, false);
     channel_config_set_dreq(&c, pio_get_dreq(pio, clocked_output_sm, true));
+    channel_config_set_bswap(&c, true);
 
     dma_channel_configure(
         chan,
         &c,
         &pio->txf[clocked_output_sm],
-        ipl,
-        count_of(ipl),
+        __payload,
+        payload_size,
         true // start immediately
     );
 
