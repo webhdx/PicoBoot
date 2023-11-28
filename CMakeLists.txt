@@ -33,3 +33,17 @@ target_include_directories(picoboot PRIVATE src)
 target_link_libraries(picoboot PRIVATE pico_stdlib hardware_pio hardware_dma)
 
 pico_add_extra_outputs(picoboot)
+
+function(merge_uf2 NAME BASE_TARGET INPUTS)
+        get_target_property(BASE_TARGET_NAME ${BASE_TARGET} OUTPUT_NAME)
+        if(BASE_TARGET_NAME STREQUAL "BASE_TARGET_NAME-NOTFOUND")
+                get_target_property(BASE_TARGET_NAME ${BASE_TARGET} NAME)
+        endif()
+
+        add_custom_target(${NAME} ALL
+                COMMAND ${CMAKE_CURRENT_LIST_DIR}/merge_uf2.py ${NAME}.uf2 ${BASE_TARGET_NAME}.uf2 ${INPUTS}
+                DEPENDS ${BASE_TARGET} ${INPUTS}
+                COMMAND_EXPAND_LISTS)
+endfunction()
+
+merge_uf2(picoboot_full picoboot "${CMAKE_CURRENT_LIST_DIR}/iplboot_pico.uf2")
