@@ -11,7 +11,10 @@ project(picoboot C CXX ASM)
 # Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
 
-add_executable(picoboot src/picoboot.c)
+add_executable(picoboot
+        src/picoboot.c
+        src/pio.c
+)
 
 pico_generate_pio_header(picoboot  
         ${CMAKE_CURRENT_LIST_DIR}/src/picoboot.pio
