@@ -15,9 +15,6 @@
 #include "endian.h"
 
 const uint PIN_LED = 25;                // Status LED
-const uint PIN_DI = 6;                  // Data output
-const uint PIN_CS = 4;                 // U10 chip select
-const uint PIN_CLK = 5;                // EXI bus clock line
 
 extern const uint32_t __payload[];
 extern const uint32_t __payload_end[];
