@@ -27,7 +27,7 @@ Join Discord Server to get support and discuss new features:
 
 ## Installation guide
 
-Head over to [the wiki](https://github.com/webhdx/PicoBoot/wiki) for [Installation guide](../../wiki/Installation-guide) and [Troubleshooting tips](../../wiki/Troubleshooting-tips).
+Head over to [support.webhdx.dev](https://support.webhdx.dev/gc/picoboot) for [Installation guide](https://support.webhdx.dev/gc/picoboot/installation-guide) and [Troubleshooting tips](https://support.webhdx.dev/gc/picoboot/troubleshooting).
 
 ## I appreciate your work. Can I support you in any way?
 
