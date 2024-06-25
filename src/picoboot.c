@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 Maciej Kobus
+ * Copyright (c) 2024 Maciej Kobus
  *
  * SPDX-License-Identifier: GPL-2.0-only
  */
