@@ -46,4 +46,4 @@ function(merge_uf2 NAME BASE_TARGET INPUTS)
                 COMMAND_EXPAND_LISTS)
 endfunction()
 
-merge_uf2(picoboot_full picoboot "${CMAKE_CURRENT_LIST_DIR}/iplboot_pico.uf2")
+merge_uf2(picoboot_full picoboot "${CMAKE_CURRENT_LIST_DIR}/payload.uf2")
