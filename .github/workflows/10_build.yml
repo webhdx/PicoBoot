@@ -65,11 +65,21 @@ jobs:
           cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE .
           make
 
-    - name: Upload artifacts
+    - name: Upload artifacts (picoboot_full.uf2)
       uses: actions/upload-artifact@v4
       with:
-        name: picoboot
-        path: |
-          picoboot_full.uf2
-          payload.uf2
-          picoboot.uf2
+        name: picoboot_full.uf2
+        path: picoboot_full.uf2
+
+    - name: Upload artifacts (picoboot.uf2)
+      uses: actions/upload-artifact@v4
+      with:
+        name: picoboot.uf2
+        path: picoboot.uf2
+
+    - name: Upload artifacts (payload.uf2)
+      uses: actions/upload-artifact@v4
+      with:
+        name: payload.uf2
+        path: payload.uf2
+
