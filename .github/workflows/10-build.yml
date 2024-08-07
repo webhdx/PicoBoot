@@ -61,6 +61,7 @@ jobs:
       uses: devcontainers/ci@v0.3
       with:
         imageName: ghcr.io/webhdx/picoboot
+        cacheFrom: ghcr.io/webhdx/picoboot
         runCmd: |
           cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE .
           make
