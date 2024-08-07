@@ -48,9 +48,11 @@ jobs:
 
     - name: Copy gekkoboot_pico.uf2
       run: |
+        cd gekkoboot
+        pwd
         echo ${{ fromJson(steps.gekkoboot-download.outputs.downloaded_files)[0] }}
         unzip ${{ fromJson(steps.gekkoboot-download.outputs.downloaded_files)[0] }}
-        tree
+        ls -la
 
 
     - name: Build and run Dev Container task
