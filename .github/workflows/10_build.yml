@@ -46,7 +46,9 @@ jobs:
         extract: true
 
     - name: Copy gekkoboot_pico.uf2
-      run: cp ${{ github.workspace }}/gekkoboot/gekkoboot_pico.uf2 ${{ github.workspace }}/picoboot/gekkoboot_pico.uf2
+      run: |
+        ls -la ${{ github.workspace }}/gekkoboot
+        ls -la ${{ github.workspace }}/picoboot
 
     - name: Build and run Dev Container task
       uses: devcontainers/ci@v0.3
