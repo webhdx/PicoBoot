@@ -39,7 +39,7 @@ jobs:
     - uses: robinraju/release-downloader@v1
       id: gekkoboot-download
       with:
-        repository: 'redolution/gekkoboot'
+        repository: 'webhdx/iplboot'
         latest: true
         fileName: '*.zip'
         out-file-path: gekkoboot
