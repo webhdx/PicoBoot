@@ -44,8 +44,6 @@ jobs:
 
     - name: Copy gekkoboot uf2 payload
       run: |
-        ls -la /home/runner/work/PicoBoot/PicoBoot
-        ls -la /home/runner/work/PicoBoot/
         cd gekkoboot
         if [ -f "gekkoboot_pico.uf2" ]; then
             cp gekkoboot_pico.uf2 ${{ github.workspace }}/payload.uf2
@@ -71,4 +69,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: picoboot
-        path: ${{steps.build.outputs.output_dir}}
+        path: |
+          picoboot_full.uf2
+          payload.uf2
+          picoboot.uf2
