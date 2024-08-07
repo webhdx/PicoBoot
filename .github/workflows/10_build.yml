@@ -38,6 +38,7 @@ jobs:
         path: picoboot
 
     - uses: robinraju/release-downloader@v1
+      id: gekkoboot-download
       with:
         repository: 'redolution/gekkoboot'
         latest: true
@@ -48,6 +49,7 @@ jobs:
     - name: Copy gekkoboot_pico.uf2
       run: |
         tree -la ${{ github.workspace }}/gekkoboot
+        echo ${{ fromJson(steps.gekkoboot-download.outputs.downloaded_files)[0] }}
 
     - name: Build and run Dev Container task
       uses: devcontainers/ci@v0.3
