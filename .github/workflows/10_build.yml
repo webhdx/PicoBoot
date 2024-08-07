@@ -42,7 +42,7 @@ jobs:
       with:
         repository: 'redolution/gekkoboot'
         latest: true
-        zipBall: true
+        fileName: '*.zip'
         out-file-path: gekkoboot
         extract: true
 
@@ -51,7 +51,6 @@ jobs:
         cd gekkoboot
         pwd
         echo ${{ fromJson(steps.gekkoboot-download.outputs.downloaded_files)[0] }}
-        unzip ${{ fromJson(steps.gekkoboot-download.outputs.downloaded_files)[0] }}
         ls -la
 
 
