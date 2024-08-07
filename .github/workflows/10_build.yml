@@ -17,11 +17,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    - name: Clean workspace
-      run: |
-        echo "Cleaning up previous run"
-        rm -rf "${{ github.workspace }}"
-        mkdir -p "${{ github.workspace }}"
+    # - name: Clean workspace
+    #   run: |
+    #     echo "Cleaning up previous run"
+    #     rm -rf "${{ github.workspace }}"
+    #     mkdir -p "${{ github.workspace }}"
 
     - name: Checkout PicoBoot code
       uses: actions/checkout@v4
@@ -29,6 +29,17 @@ jobs:
         repository: ${{ github.event.pull_request.head.repo.full_name }}
         ref: ${{ github.head_ref }}
         path: picoboot
+
+    - uses: robinraju/release-downloader@v1
+      with:
+        repository: 'redolution/gekkoboot'
+        latest: true
+        zipBall: true
+        out-file-path: gekkoboot
+        extract: true
+
+    - name: Copy gekkoboot_pico.uf2
+      run: ls -la ${GITHUB_WORKSPACE}
 
     - name: Build PicoBoot firmware
       id: build
