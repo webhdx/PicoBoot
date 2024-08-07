@@ -48,8 +48,9 @@ jobs:
 
     - name: Copy gekkoboot uf2 payload
       run: |
+        ls -la /home/runner/work/PicoBoot/PicoBoot
+        ls -la /home/runner/work/PicoBoot/
         cd gekkoboot
-        ls -la
         if [ -f "gekkoboot_pico.uf2" ]; then
             cp gekkoboot_pico.uf2 ${{ github.workspace }}/payload.uf2
         elif [ -f "iplboot_pico.uf2" ]; then
