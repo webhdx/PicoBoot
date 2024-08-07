@@ -1,0 +1,44 @@
+name: Build
+on:
+  push:
+    branches:
+      - main
+      - ci
+  pull_request:
+    branches:
+      - main
+
+env:
+  # Customize the CMake build
+  BUILD_TYPE: Release # Release, Debug, RelWithDebInfo
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Clean workspace
+      run: |
+        echo "Cleaning up previous run"
+        rm -rf "${{ github.workspace }}"
+        mkdir -p "${{ github.workspace }}"
+
+    - name: Checkout PicoBoot code
+      uses: actions/checkout@v4
+      with:
+        repository: ${{ github.event.pull_request.head.repo.full_name }}
+        ref: ${{ github.head_ref }}
+        path: picoboot
+
+    - name: Build PicoBoot firmware
+      id: build
+      uses: samyarsadat/Pico-Build-Action@v1
+      with:
+        source_dir: "picoboot"
+        cmake_args: "-DCMAKE_BUILD_TYPE=$BUILD_TYPE"
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: picoboot
+        path: ${{steps.build.outputs.output_dir}}
