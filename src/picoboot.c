@@ -75,7 +75,7 @@ void main()
     bus_ctrl_hw->priority = BUSCTRL_BUS_PRIORITY_DMA_W_BITS | BUSCTRL_BUS_PRIORITY_DMA_R_BITS;
 
     gpio_set_slew_rate(PIN_DI, GPIO_SLEW_RATE_FAST);
-    gpio_set_drive_strength(PIN_DI, GPIO_DRIVE_STRENGTH_8MA);
+    gpio_set_drive_strength(PIN_DI, GPIO_DRIVE_STRENGTH_12MA);
 
     PIO pio = pio0;
 
