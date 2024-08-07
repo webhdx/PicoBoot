@@ -22,13 +22,6 @@ jobs:
         rm -rf "${{ github.workspace }}"
         mkdir -p "${{ github.workspace }}"
 
-    - name: Set environment variables
-      id: vars
-      shell: pwsh
-      run: |
-           $calculatedSha=git rev-parse --short ${{ github.sha }}
-           echo "::set-output name=short_sha::$calculatedSha"
-
     - name: Login to GitHub Container Registry
       uses: docker/login-action@v3
       with:
