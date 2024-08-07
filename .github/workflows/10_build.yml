@@ -46,13 +46,18 @@ jobs:
         out-file-path: gekkoboot
         extract: true
 
-    - name: Copy gekkoboot_pico.uf2
+    - name: Copy gekkoboot uf2 payload
       run: |
         cd gekkoboot
-        pwd
-        echo ${{ fromJson(steps.gekkoboot-download.outputs.downloaded_files)[0] }}
         ls -la
-
+        if [ -f "gekkoboot_pico.uf2" ]; then
+            cp gekkoboot_pico.uf2 ${{ github.workspace }}/payload.uf2
+        elif [ -f "iplboot_pico.uf2" ]; then
+            cp iplboot_pico.uf2 ${{ github.workspace }}/payload.uf2
+        else
+            echo "Neither gekkoboot_pico.uf2 nor iplboot_pico.uf2 found."
+            exit 1
+        fi
 
     - name: Build and run Dev Container task
       uses: devcontainers/ci@v0.3
