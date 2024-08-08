@@ -5,7 +5,6 @@
 
 This is a long awaited IPL replacement modchip for Nintendo GameCube. It's open source, cheap and easy to install.
 
-
 Join Discord Server to get support and discuss new features:
 
 [![](https://dcbadge.vercel.app/api/server/fEhyWRPCmb)](https://click.webhdx.dev/discord)
@@ -16,18 +15,13 @@ Join Discord Server to get support and discuss new features:
 * very easy installation, only 5 wires to solder
 * programmable via USB cable, without any drivers and programs
 * automatically boots any DOL app of your choice
-* uses "IPL injection" approach superior to mods like XenoGC
-
-## Video guides and features overview
-
-- [PicoBoot Modchip Will Unleash The POWER of Your Nintendo GAMECUBE! | Installation Guide and Overview](https://www.youtube.com/watch?v=qwL4ZSa0xMo) by [MachoNachoProductions](https://www.youtube.com/c/MachoNachoProductions)
-- [This new Gamecube Modchip is a GAMECHANGER - PicoBoot](https://www.youtube.com/watch?v=lfMTLEM0yeQ) by [RockerGaming](https://www.youtube.com/c/RockerGaming)
-- [$5 Gamecube IPL Modchip?! Picoboot Dol-001 + Dol-101 Installation / Setup / Showcase](https://www.youtube.com/watch?v=W_9-mSBMBJ4) by [ModzvilleUSA!](https://www.youtube.com/c/ModzvilleUSA)
-- [PicoBoot GameCube custom mod chip - make and install your own chip with a Raspberry Pi Pico](https://youtu.be/rDrosSd-nDc) by [Joe Bleeps](https://www.youtube.com/@JoeBleeps)
+* paired with SD2SP2 v2.0 or M.2 Loader offers comparable experience to GC Loader and Flippydrive
 
 ## Installation guide
 
 Head over to [support.webhdx.dev](https://support.webhdx.dev/gc/picoboot) for [Installation guide](https://support.webhdx.dev/gc/picoboot/installation-guide) and [Troubleshooting tips](https://support.webhdx.dev/gc/picoboot/troubleshooting).
+
+![Wiring diagram](assets/Wiring%20diagram.jpg)
 
 ## I appreciate your work. Can I support you in any way?
 
@@ -38,7 +32,7 @@ This project is free and available for everyone. If you want to support it anywa
 I'd like to thank people who helped making PicoBoot possible:
 * #gc-forever crew: [Extrems](https://github.com/Extrems), [novenary](https://github.com/9ary), [emu_kidid](https://github.com/emukidid) and others 
 * [tmbinc](https://github.com/tmbinc) - he started it all 🙏 
-* happy_bunny - I started my research with his great writeup on [Shuriken Attack](https://www.retro-system.com/shuriken_attack.htm)
+* Steven Taffs aka happy_bunny - his Shuriken Attack modchip and documentation heavily inspired PicoBoot
 * beta testers: [seewood](https://github.com/seewood), [MethodOrMadness](https://github.com/MethodOrMadness), [renanbianchi](https://github.com/renanbianchi)
 * content creators: [MachoNachoProductions](https://www.youtube.com/c/MachoNachoProductions), [RockerGaming](https://www.youtube.com/c/RockerGaming), [ModzvilleUSA!](https://www.youtube.com/c/ModzvilleUSA)
 * people who sponsored this project
@@ -46,5 +40,5 @@ I'd like to thank people who helped making PicoBoot possible:
 
 ## Acknowledgements
 
-Some parts of this project use GPL-2.0 licensed code from:
- * https://github.com/redolution/iplboot
+This project uses GPL-2.0 licensed code from:
+ * https://github.com/redolution/gekkoboot
