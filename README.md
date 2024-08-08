@@ -3,7 +3,7 @@
 
 # PicoBoot
 
-This is long awaited IPL replacement modchip for Nintendo GameCube. 
+This is long awaited IPL replacement modchip for Nintendo GameCube.<br />
 It's open source, cheap and easy to install.
 
 Join Discord Server to get support and discuss new features:
