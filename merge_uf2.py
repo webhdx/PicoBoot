@@ -11,6 +11,7 @@ magic1 = 0x9E5D5157
 magic2 = 0x0AB16F30
 
 block_size = 256
+sector_size = 4 * 1024
 
 @dataclass
 class Uf2Block:
@@ -45,6 +46,7 @@ def decode_uf2(data):
 def write_uf2(blocks, name):
     with open(name, "wb") as f:
         for seq, b in enumerate(blocks):
+            assert len(b.data) == b.size
             data = struct.pack(
                 block_format,
                 magic0,
@@ -74,6 +76,23 @@ def main():
         assert b.flags == ref.flags
         assert b.size == block_size
         assert b.family_id == ref.family_id
+
+    block_map = set(b.address for b in blocks)
+    sector_map = set(a // sector_size * sector_size for a in block_map)
+    blocks_to_fill = set(itertools.chain.from_iterable(
+        (range(a, a + sector_size, block_size) for a in sector_map),
+    )).difference(block_map)
+    def padding_block(address):
+        return Uf2Block(
+            ref.flags,
+            address,
+            block_size,
+            0, # dummy
+            0, # dummy
+            ref.family_id,
+            bytes(block_size),
+        )
+    blocks += (padding_block(a) for a in blocks_to_fill)
 
     blocks.sort(key=lambda b: b.address)
     for a, b in itertools.pairwise(blocks):
