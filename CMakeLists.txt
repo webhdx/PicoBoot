@@ -11,7 +11,10 @@ project(picoboot C CXX ASM)
 # Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
 
-add_executable(picoboot src/picoboot.c)
+add_executable(picoboot
+        src/picoboot.c
+        src/pio.c
+)
 
 pico_generate_pio_header(picoboot  
         ${CMAKE_CURRENT_LIST_DIR}/src/picoboot.pio
@@ -20,6 +23,7 @@ pico_generate_pio_header(picoboot
 pico_set_program_name(picoboot "picoboot")
 pico_set_program_version(picoboot "0.1")
 pico_set_binary_type(picoboot copy_to_ram)
+target_link_options(pico_standard_link INTERFACE "LINKER:--script=${CMAKE_CURRENT_LIST_DIR}/memmap_picoboot.ld")
 
 pico_enable_stdio_uart(picoboot 0)
 pico_enable_stdio_usb(picoboot 1)
@@ -29,3 +33,17 @@ target_include_directories(picoboot PRIVATE src)
 target_link_libraries(picoboot PRIVATE pico_stdlib hardware_pio hardware_dma)
 
 pico_add_extra_outputs(picoboot)
+
+function(merge_uf2 NAME BASE_TARGET INPUTS)
+        get_target_property(BASE_TARGET_NAME ${BASE_TARGET} OUTPUT_NAME)
+        if(BASE_TARGET_NAME STREQUAL "BASE_TARGET_NAME-NOTFOUND")
+                get_target_property(BASE_TARGET_NAME ${BASE_TARGET} NAME)
+        endif()
+
+        add_custom_target(${NAME} ALL
+                COMMAND ${CMAKE_CURRENT_LIST_DIR}/merge_uf2.py ${NAME}.uf2 ${BASE_TARGET_NAME}.uf2 ${INPUTS}
+                DEPENDS ${BASE_TARGET} ${INPUTS}
+                COMMAND_EXPAND_LISTS)
+endfunction()
+
+merge_uf2(picoboot_full picoboot "${CMAKE_CURRENT_LIST_DIR}/iplboot_pico.uf2")

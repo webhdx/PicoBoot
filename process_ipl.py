@@ -1,22 +1,15 @@
 #!/usr/bin/env python3
 
-#
-# Based on dol2ipl.py from https://github.com/redolution/iplboot
-#
-# Original source by 9ary, bootrom descrambler reversed by segher
-#
-
 from datetime import datetime
 import math
 import struct
 import sys
 
-payload_padding = [
-    0x81, 0x4a, 0xe6, 0xc8, 0x00, 0x04, 0xc5, 0x77, 
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-]
+#
+# Based on dol2ipl.py from https://github.com/redolution/gekkoboot
+#
+# Original source by novenary, bootrom scrambling logic by segher
+#
 
 def scramble(data):
     acc = 0
@@ -77,51 +70,6 @@ def flatten_dol(data):
     # Entry point, load address, memory image
     return header[56], dol_min, img
 
-def bytes_to_c_array(data):
-    p_list = [data[i:i + 4] for i in range(0, len(data), 4)]
-    return ["0x%08x" % int.from_bytes(b, byteorder='big', signed=False) for b in p_list]
-
-def generate_header_file(elements, executable, input_file, output_file, size):
-    output = '#include <stdio.h>\n\n'
-    output += '//\n'
-    output += '// Command: {0} {1} {2}\n'.format(executable, input_file, output_file)
-    output += '//\n'
-    output += '// File: {0}, size: {1} bytes\n'.format(input_file, size)
-    output += '//\n'
-    output += '// File generated on {0}\n'.format(datetime.now().strftime("%d.%m.%Y %H:%M:%S"))
-    output += '//\n\n'
-    output += 'uint32_t __in_flash("ipl_data") ipl[]  = {\n\t'
-
-    for num in range(len(elements)):
-        if num > 0 and num % 4 == 0:
-            output += '\n\t'
-        
-        output += elements[num]
-
-        if num != len(elements):
-            output += ', '
-
-    output += '\n};\n'
-
-    return output
-
-def process_scrambled_ipl(ipl, size):
-    """Does additional processing to scrambled IPL payload.
-
-    Payload used by PicoBoot has to be preprocessed. 
-    Whole payload has to be aligned to 1K blocks then every bit needs to be duplicated 4 times.
-    """
-    
-    out2 = int.from_bytes(ipl, byteorder='big', signed=False)
-    out2 = out2 << 1
-
-    binary = ''.join([char * 4 for char in format(out2, 'b')])
-    binary = int(binary, 2)
-
-    payload = binary.to_bytes(size * 4, 'big')
-    
-    return payload
-    
 def main():
     if len(sys.argv) != 3:
         print(f"Usage: {sys.argv[0]} <executable> <output>")
@@ -148,27 +96,27 @@ def main():
         print("Invalid entry point and base address (must be 0x81300000)")
         return -1
 
-    payload = bytearray(0x700) + bytearray(payload_padding)+ img
-    payload_size = size + 0x20; # there are 32 bytes of additional padding needed 
+    img = scramble(bytearray(0x720) + img)[0x720:]
 
-    if payload_size % 1024 != 0:
-        new_size_k = math.ceil(payload_size / 1024)
-        new_size = new_size_k * 1024
-        print(f"Payload needs to be aligned to {new_size_k}K")
-        payload += bytearray(new_size - payload_size)
-        payload_size = new_size
+    align_size = 4
+    img = (
+        img.ljust(math.ceil(len(img) / align_size) * align_size, b"\x00")
+        + b"PICO"
+    )
 
-    print(f"Output binary size: {payload_size} bytes ({payload_size / 1024}K)")
+    header_size = 32
+    header = struct.pack(
+        "> 8B I 20x",
+        *b"IPLBOOT ",
+        len(img) + header_size,
+    )
 
-    scrambled_payload = scramble(payload)[0x700:]
-    payload_size = len(scrambled_payload);
+    assert len(header) == header_size
 
-    byte_groups = bytes_to_c_array(process_scrambled_ipl(scrambled_payload, payload_size))
+    out = header + img
 
-    output = generate_header_file(byte_groups, sys.argv[0], sys.argv[1], sys.argv[2], size)
-
-    with open(sys.argv[2], "w") as f:
-        f.write(output)
+    with open(sys.argv[2], "wb") as f:
+        f.write(out)
 
 if __name__ == "__main__":
     sys.exit(main())
