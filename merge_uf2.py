@@ -10,6 +10,8 @@ magic0 = 0x0A324655 # "UF2\n"
 magic1 = 0x9E5D5157
 magic2 = 0x0AB16F30
 
+block_size = 256
+
 @dataclass
 class Uf2Block:
     # Fields are ordered as they appear in the serialized binary
@@ -70,7 +72,7 @@ def main():
     ref = blocks[0]
     for b in blocks:
         assert b.flags == ref.flags
-        assert b.size <= ref.size
+        assert b.size == block_size
         assert b.family_id == ref.family_id
 
     blocks.sort(key=lambda b: b.address)
