@@ -3,10 +3,21 @@ cmake_minimum_required(VERSION 3.13)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
+find_package(Git)
+execute_process(COMMAND ${GIT_EXECUTABLE} describe --tags --always --dirty
+	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+	OUTPUT_VARIABLE GIT_REPO_VERSION
+	OUTPUT_STRIP_TRAILING_WHITESPACE)
+string(REGEX REPLACE "v([0-9]+\\.[0-9]+).*" "\\1" CMAKE_GIT_REPO_VERSION ${GIT_REPO_VERSION})
+string(REGEX REPLACE "^(.......-.*)|(.......)$" "0.0.0" CMAKE_GIT_REPO_VERSION ${CMAKE_GIT_REPO_VERSION})
+configure_file("src/version.h.in" "src/version.h")
+message("GIT_REPO_VERSION is ${GIT_REPO_VERSION}")
+message("CMAKE_GIT_REPO_VERSION is ${CMAKE_GIT_REPO_VERSION}")
+
 # Pull in Raspberry Pi Pico SDK (must be before project)
 include(pico_sdk_import.cmake)
 
-project(picoboot C CXX ASM)
+project(picoboot LANGUAGES C CXX ASM VERSION ${CMAKE_GIT_REPO_VERSION})
 
 # Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
@@ -20,8 +31,11 @@ pico_generate_pio_header(picoboot
         ${CMAKE_CURRENT_LIST_DIR}/src/picoboot.pio
 )
 
-pico_set_program_name(picoboot "picoboot")
-pico_set_program_version(picoboot "0.1")
+pico_set_program_name(picoboot "PicoBoot")
+pico_set_program_description(picoboot "RP2040 based modchip for Nintendo GameCube")
+pico_set_program_version(picoboot ${GIT_REPO_VERSION})
+pico_set_program_url(picoboot "https://github.com/webhdx/PicoBoot")
+
 pico_set_binary_type(picoboot copy_to_ram)
 target_link_options(pico_standard_link INTERFACE "LINKER:--script=${CMAKE_CURRENT_LIST_DIR}/memmap_picoboot.ld")
 
