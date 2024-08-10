@@ -4,6 +4,7 @@ _deps
 .DS_Store
 
 # Build environment
+build/
 CMakeFiles/
 elf2uf2/
 generated/
