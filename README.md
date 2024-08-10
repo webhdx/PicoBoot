@@ -18,7 +18,7 @@ Join Discord Server to get support and discuss new features:
 * automatically boots any homebrew app of your choice
 * similar experience to ODEs like FlippyDrive or GC Loader
 
-## Installation guide
+## Installation
 
 > [!TIP]
 > Documentation covering [Installation](https://support.webhdx.dev/gc/picoboot/installation-guide) and [Troubleshooting](https://support.webhdx.dev/gc/picoboot/troubleshooting) is now hosted at [support.webhdx.dev](https://support.webhdx.dev/gc/picoboot).
@@ -26,7 +26,7 @@ Join Discord Server to get support and discuss new features:
 
 ![Wiring diagram](assets/Wiring%20diagram.jpg)
 
-## I appreciate your work. Can I support you in any way?
+## Support the project
 
 This project is free and available for everyone. If you want to support it anyway, consider using [:heart: Sponsor](https://github.com/sponsors/webhdx) button.
 
