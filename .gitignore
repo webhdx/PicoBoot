@@ -4,9 +4,6 @@ _deps
 .DS_Store
 
 # Build environment
-src/*
-!src/picoboot.c
-!src/picoboot.pio
 CMakeFiles/
 elf2uf2/
 generated/
@@ -20,7 +17,5 @@ picoboot.dis
 picoboot.elf
 picoboot.elf.map
 picoboot.hex
-picoboot.uf2
+*.uf2
 picoboot.pio.h
-ipl.h
-*.dol

@@ -2,23 +2,24 @@
  ;
  ; SPDX-License-Identifier: GPL-2.0-only
 
-.define PUBLIC CLK_PIN     5    ; EXI clock signal
-.define PUBLIC CS_PIN      4    ; U10 chip select
+.define PUBLIC PIN_CLK     5    ; EXI clock signal
+.define PUBLIC PIN_CS      4    ; U10 chip select
+.define PUBLIC PIN_DI      6    ; MISO data output
 
 .program on_transfer
 
 start:
-    wait 1 pin 0                ; Wait for CS to go HIGH
-    wait 0 pin 0                ; Wait for CS to go LOW
+    wait 1 gpio PIN_CS          ; Wait for CS to go HIGH
+    wait 0 gpio PIN_CS          ; Wait for CS to go LOW
     jmp x-- start
     irq set 0                   ; Set IRQ flag to start injecting payload
 
 next_transfer:
 .wrap_target
-    wait 1 pin 0                ; Wait for CS to go HIGH
-    wait 0 pin 0                ; Wait for CS to go LOW
+    wait 1 gpio PIN_CS          ; Wait for CS to go HIGH
+    wait 0 gpio PIN_CS          ; Wait for CS to go LOW
     irq set 0                   ; Let other SM inject the payload
-    wait 1 pin 1                ; Hold until CLK goes HIGH
+    wait 1 gpio PIN_CLK         ; Hold until CLK goes HIGH
 .wrap
 
 .program clocked_output
@@ -28,88 +29,26 @@ start:
     wait 1 irq 0                ; Hold until SM0 tells us to start injecting
 
 wait_bit:
-    wait 0 gpio CLK_PIN         ; Seems to be slighty faster than "wait 0 pin 1"?
-    wait 1 gpio CLK_PIN
+    wait 0 gpio PIN_CLK         ; Seems to be slighty faster than "wait 0 pin 1"?
+    wait 1 gpio PIN_CLK
     jmp x-- wait_bit            ; Skip past address bytes
     mov x, y                    ; Copy y value to x, it represents number of bits in the transfer
-    set pindirs 0b11111         ; Set data line as output
+    set pindirs 1               ; Set data line as output
+
+    out pins, 1                 ; Output single IPL bit
+    jmp x-- on_rising_edge      ; Decrement x
 
 on_rising_edge:
-    wait 0 gpio CLK_PIN         ; Sample until rising edge on CLK line
-    wait 1 gpio CLK_PIN
+    wait 0 gpio PIN_CLK         ; Sample until rising edge on CLK line
+    wait 1 gpio PIN_CLK
 
 write_bit:
-    out pins, 4                 ; Output single IPL bit over 4 GPIOs (=4 bits of our payload)
+    out pins, 1                 ; Output single IPL bit
     jmp x-- on_rising_edge      ; Jump back to next clock pulse wait routine if there is more data to inject
 
     jmp !osre start             ; If there is more data in OSR, go back to start routine and wait for another transfer
 
-    set pins 0b10000 [3]        ; Output pulse on debug line
-    set pins 0b00000
-    
-    set pindirs 0b10000         ; Leave data line floating so RTC-DOL can take over and load fonts etc.
+    set pindirs 0               ; Leave data line floating so RTC-DOL can take over and load fonts etc.
 
 disable_chip:
     jmp disable_chip            ; Stay in the loop forever until power cycle
-
-% c-sdk {
-
-    void on_transfer_program_init(PIO pio, uint sm, uint offset, uint clk_pin, uint cs_pin, uint out_pin) 
-    {
-        pio_sm_config c = on_transfer_program_get_default_config(offset);
-
-        pio_gpio_init(pio, clk_pin);
-        pio_gpio_init(pio, cs_pin);
-
-        sm_config_set_jmp_pin(&c, cs_pin);
-        sm_config_set_in_pins(&c, cs_pin);
-        
-        // Set CS pin as input
-        pio_sm_set_consecutive_pindirs(pio, sm, cs_pin, 1, false);
-
-        // Shift to right, autopull with threshold 32
-        sm_config_set_out_shift(&c, false, true, 32);
-
-        // Run at full system clock
-        sm_config_set_clkdiv(&c, 1.f);
-
-        // Load configuration and jump to start of the program
-        pio_sm_init(pio, sm, offset, &c);
-    }
-
-    void clocked_output_program_init(PIO pio, uint sm, uint offset, uint data_pin, uint clk_pin, uint cs_pin) 
-    {
-        pio_sm_config c = clocked_output_program_get_default_config(offset);
-
-        pio_gpio_init(pio, clk_pin);
-        pio_gpio_init(pio, cs_pin);
-
-        pio_gpio_init(pio, data_pin);
-        pio_gpio_init(pio, data_pin + 1);
-        pio_gpio_init(pio, data_pin + 2);
-        pio_gpio_init(pio, data_pin + 3);
-        pio_gpio_init(pio, data_pin + 4);
-
-        sm_config_set_jmp_pin(&c, clk_pin);
-        sm_config_set_in_pins(&c, cs_pin);
-
-        // Out and Set pins have to overlap so we can make line floating (=set it as input)
-        sm_config_set_out_pins(&c, data_pin, 4);
-        sm_config_set_set_pins(&c, data_pin, 5);
-
-        pio_sm_set_consecutive_pindirs(pio, sm, cs_pin, 2, false); // Set CS and CLK as inputs
-
-        pio_sm_set_consecutive_pindirs(pio, sm, data_pin, 4, false);
-        pio_sm_set_consecutive_pindirs(pio, sm, (data_pin + 4), 1, true); // Debug pin used as output
-
-        // Shift to right, autopull with threshold 32
-        sm_config_set_out_shift(&c, false, true, 32);
-        sm_config_set_fifo_join(&c, PIO_FIFO_JOIN_TX);
-
-        // Run at full system clock
-        sm_config_set_clkdiv(&c, 1.f);
-
-        pio_sm_init(pio, sm, offset, &c);
-    }
-
-%}
