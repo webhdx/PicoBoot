@@ -11,12 +11,12 @@ Join Discord Server to get support and discuss new features:
 [![](https://dcbadge.vercel.app/api/server/fEhyWRPCmb)](https://click.webhdx.dev/discord)
 
 ## Features
-* it's open source
+* open source
 * uses $4 Raspberry Pi Pico board
-* very easy installation, only 5 wires to solder
-* programmable via USB cable, without any drivers and programs
-* automatically boots any DOL app of your choice
-* paired with SD2SP2 v2.0 or M.2 Loader offers comparable experience to GC Loader and FlippyDrive
+* very easy installation, only 5 wires to solder or a flex cable
+* upgradable via USB cable, without any drivers and programs
+* automatically boots any homebrew app of your choice
+* similar experience to ODEs like FlippyDrive or GC Loader
 
 ## Installation guide
 
