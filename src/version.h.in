@@ -1,0 +1,3 @@
+#pragma once
+
+#define GP2040VERSION "${GIT_REPO_VERSION}"
