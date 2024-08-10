@@ -16,12 +16,12 @@ Join Discord Server to get support and discuss new features:
 * very easy installation, only 5 wires to solder
 * programmable via USB cable, without any drivers and programs
 * automatically boots any DOL app of your choice
-* paired with SD2SP2 v2.0 or M.2 Loader offers comparable experience to GC Loader and Flippydrive
+* paired with SD2SP2 v2.0 or M.2 Loader offers comparable experience to GC Loader and FlippyDrive
 
 ## Installation guide
 
 > [!TIP]
-> Documentation covering [Installation guide](https://support.webhdx.dev/gc/picoboot/installation-guide) and [Troubleshooting](https://support.webhdx.dev/gc/picoboot/troubleshooting) is now hosted at [support.webhdx.dev](https://support.webhdx.dev/gc/picoboot).
+> Documentation covering [Installation](https://support.webhdx.dev/gc/picoboot/installation-guide) and [Troubleshooting](https://support.webhdx.dev/gc/picoboot/troubleshooting) is now hosted at [support.webhdx.dev](https://support.webhdx.dev/gc/picoboot).
 
 
 ![Wiring diagram](assets/Wiring%20diagram.jpg)
