@@ -1,0 +1,120 @@
+name: Tag and Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to tag'
+        required: true
+        default: 'v0.4'
+        type: string
+      is_draft:
+        description: 'Is draft release?'
+        default: false
+        type: boolean
+      is_prerelease:
+        description: 'Is prerelease?'
+        default: false
+        type: boolean
+      name:
+        description: 'Name'
+        required: false
+        default: ''
+        type: string
+      release_description:
+        description: 'Release description (Markdown supported)'
+        required: false
+        default: ''
+        type: string
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Git
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
+      - name: Tag the branch
+        working-directory: ${{ github.workspace }}
+        run: |
+          git tag ${{ github.event.inputs.version }}
+          git push origin ${{ github.event.inputs.version }}
+
+  build:
+    needs: tag
+    uses: ./.github/workflows/10-build.yml
+
+  release:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-tags: true
+
+      - name: Get commit hash
+        id: vars
+        run: |
+          git tag
+          echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Determine Release Name
+        id: determine_name
+        run: |
+          if [ -z "${{ github.event.inputs.name }}" ]; then
+            echo "name=PicoBoot ${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            echo "name=${{ github.event.inputs.name }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Retrieve artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: picoboot-${{ steps.vars.outputs.sha_short }}
+          path: dist/
+      
+      - name: Prepare release description 
+        run: | 
+          touch release-description.md
+          echo "${{ github.event.inputs.release_description }}" >> release-description.md
+
+      - name: Calculate artifact checksum 
+        run: |
+          echo '```' >> release-description.md
+          cd dist/
+          sha256sum picoboot_full.uf2 >> ../release-description.md
+          cd ../
+          echo '```' >> release-description.md
+      
+      - name: Set up Git
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.event.inputs.version }}
+          release_name: ${{ steps.determine_name.outputs.name }}
+          body_path: ${{ github.workspace }}/release-description.md
+          draft: ${{ github.event.inputs.is_draft }}
+          prerelease: ${{ github.event.inputs.is_prerelease }}
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ github.workspace }}/dist/picoboot_full.uf2
+          asset_name: picoboot_full.uf2
+          asset_content_type: application/octet-stream
