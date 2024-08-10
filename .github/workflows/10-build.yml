@@ -3,14 +3,13 @@ on:
   push:
     branches:
       - main
-      - ci
   pull_request:
     branches:
       - main
 
 env:
   # Customize the CMake build
-  BUILD_TYPE: Release # Release, Debug, RelWithDebInfo
+  BUILD_TYPE: RelWithDebInfo # Release, Debug, RelWithDebInfo
 
 jobs:
   build:
