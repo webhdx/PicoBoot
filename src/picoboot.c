@@ -14,7 +14,8 @@
 #include "picoboot.pio.h"
 #include "endian.h"
 
-const uint PIN_LED = 25;                // Status LED
+const uint PIN_LED = 25;                    // Status LED
+const uint PIN_LEGACY_DI = 7;
 
 extern const uint32_t __payload[];
 extern const uint32_t __payload_end[];
@@ -57,6 +58,11 @@ void main()
     gpio_init(PIN_LED);
     gpio_set_dir(PIN_LED, GPIO_OUT);
     gpio_put(PIN_LED, true);
+
+    // set legacy DI pin GP7 to high impedance state
+    gpio_init(PIN_LEGACY_DI); 
+    gpio_set_dir(PIN_LEGACY_DI, GPIO_IN);
+    gpio_disable_pulls(PIN_LEGACY_DI);
 
     size_t payload_size = validate_payload();
     if (payload_size == SIZE_MAX) {
