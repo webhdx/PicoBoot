@@ -20,9 +20,11 @@ Join Discord Server to get support and discuss new features:
 
 ## Installation
 
-> [!TIP]
-> Documentation covering [Installation](https://support.webhdx.dev/gc/picoboot/installation-guide) and [Troubleshooting](https://support.webhdx.dev/gc/picoboot/troubleshooting) is now hosted at [support.webhdx.dev](https://support.webhdx.dev/gc/picoboot).
+> [!NOTE]
+> Prior to PicoBoot v0.4, wiring was slightly different and most videos available online cover the old wiring method. You no longer need to bridge pins GP6 and GP7. If you are making fresh PicoBoot installation please follow new wiring diagram. If you are updating from older firmware, you don't have to change the wiring at all as new firmware is backwards compatible.
 
+> [!TIP]
+> Documentation covering [Installation](https://support.webhdx.dev/gc/picoboot/installation-guide) and [Troubleshooting](https://support.webhdx.dev/gc/picoboot/troubleshooting) is hosted at [support.webhdx.dev](https://support.webhdx.dev/gc/picoboot).
 
 ![Wiring diagram](assets/Wiring%20diagram.jpg)
 
