@@ -7,6 +7,8 @@ on:
     branches:
       - main
 
+  workflow_call:
+
 env:
   # Customize the CMake build
   BUILD_TYPE: RelWithDebInfo # Release, Debug, RelWithDebInfo
