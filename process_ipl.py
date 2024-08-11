@@ -1,17 +1,11 @@
 #!/usr/bin/env python3
 
-from datetime import datetime
 import math
 import struct
 import sys
 
-#
-# Based on dol2ipl.py from https://github.com/redolution/gekkoboot
-#
-# Original source by novenary, bootrom scrambling logic by segher
-#
-
-def scramble(data):
+# bootrom descrambler reversed by segher
+def scramble(data, *, qoobsx=False):
     acc = 0
     nacc = 0
 
@@ -20,7 +14,6 @@ def scramble(data):
     v = 0x3FF1
 
     x = 1
-
     it = 0
     while it < len(data):
         t0 = t & 1
@@ -58,27 +51,66 @@ def scramble(data):
 
 def flatten_dol(data):
     header = struct.unpack(">64I", data[:256])
+    offsets = header[:18]
+    addresses = header[18:36]
+    sizes = header[36:54]
+    bss_address = header[54]
+    bss_size = header[55]
+    entry = header[56]
 
-    dol_min = min(a for a in header[18:36] if a)
-    dol_max = max(a + s for a, s in zip(header[18:36], header[36:54]))
+    dol_min = min(a for a in addresses if a)
+    dol_max = max(a + s for a, s in zip(addresses, sizes))
 
     img = bytearray(dol_max - dol_min)
 
-    for offset, address, length in zip(header[:18], header[18:36], header[36:54]):
-        img[address - dol_min:address + length - dol_min] = data[offset:offset + length]
+    for offset, address, size in zip(offsets, addresses, sizes):
+        img[address - dol_min:address + size - dol_min] = data[offset:offset + size]
 
     # Entry point, load address, memory image
-    return header[56], dol_min, img
+    return entry, dol_min, img
+
+def pack_uf2(data, base_address):
+    ret = bytearray()
+
+    seq = 0
+    addr = base_address
+    chunk_size = 256
+    total_chunks = math.ceil(len(data) / chunk_size)
+    while data:
+        chunk = data[:chunk_size]
+        data = data[chunk_size:]
+
+        ret += struct.pack(
+            "< 8I 476B I",
+            0x0A324655, # Magic 1 "UF2\n"
+            0x9E5D5157, # Magic 2
+            0x00002000, # Flags (family ID present)
+            addr,
+            chunk_size,
+            seq,
+            total_chunks,
+            0xE48BFF56, # Board family: Raspberry Pi RP2040
+            *chunk.ljust(476, b"\x00"),
+            0x0AB16F30, # Final magic
+        )
+
+        seq += 1
+        addr += chunk_size
+
+    return ret
 
 def main():
-    if len(sys.argv) != 3:
-        print(f"Usage: {sys.argv[0]} <executable> <output>")
-        return -1
+    if len(sys.argv) not in range(3, 4 + 1):
+        print(f"Usage: {sys.argv[0]} <output> <executable>")
+        return 1
 
-    with open(sys.argv[1], "rb") as f:
+    output = sys.argv[1]
+    executable = sys.argv[2]
+
+    with open(executable, "rb") as f:
         exe = bytearray(f.read())
 
-    if sys.argv[1].endswith(".dol"):
+    if executable.endswith(".dol"):
         entry, load, img = flatten_dol(exe)
         entry &= 0x017FFFFF
         entry |= 0x80000000
@@ -88,6 +120,8 @@ def main():
         print(f"Entry point:   0x{entry:0{8}X}")
         print(f"Load address:  0x{load:0{8}X}")
         print(f"Image size:    {size} bytes ({size // 1024}K)")
+    elif executable.endswith(".elf"):
+        pass
     else:
         print("Unknown input format")
         return -1
@@ -113,9 +147,17 @@ def main():
 
     assert len(header) == header_size
 
-    out = header + img
+    if output.endswith(".bin"):
+        out = header + img
 
-    with open(sys.argv[2], "wb") as f:
+    elif output.endswith(".uf2"):
+        out = pack_uf2(header + img, 0x10080000)
+
+    else:
+        print("Unknown output format")
+        return -1
+
+    with open(output, "wb") as f:
         f.write(out)
 
 if __name__ == "__main__":
