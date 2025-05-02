@@ -27,6 +27,6 @@ jobs:
       uses: devcontainers/ci@v0.3
       with:
         subFolder: .github
-        imageName: ghcr.io/${{ github.repository }}
-        cacheFrom: ghcr.io/${{ github.repository }}
+        imageName: ghcr.io/webhdx/picoboot
+        cacheFrom: ghcr.io/webhdx/picoboot
         push: always
