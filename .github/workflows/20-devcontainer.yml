@@ -5,13 +5,13 @@ on:
   push:
     branches:
       - "main"
-    pull_requests:
-      branches:
-        - "main"
 
 jobs:
   build-and-push:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-24.04, ubuntu-24.04-arm]
+    runs-on: ${{ matrix.os }}
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -30,4 +30,3 @@ jobs:
         imageName: ghcr.io/webhdx/picoboot
         cacheFrom: ghcr.io/webhdx/picoboot
         push: always
-        platform: linux/amd64,linux/arm64
