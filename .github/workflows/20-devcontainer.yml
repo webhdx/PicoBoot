@@ -35,3 +35,4 @@ jobs:
         imageName: ghcr.io/webhdx/picoboot
         cacheFrom: ghcr.io/webhdx/picoboot
         push: always
+        platform: linux/amd64,linux/arm64
