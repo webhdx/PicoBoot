@@ -21,7 +21,9 @@ RUN apt-get update && \
         pkg-config \
         clang-format \
         python3 \
-        python3-tk
+        python3-tk \
+        erlang \
+        rebar3
 
 WORKDIR /apps
 
@@ -45,6 +47,9 @@ RUN cd /apps && git clone https://github.com/raspberrypi/picotool.git --depth=1 
     cd picotool && mkdir build && cd build && cmake ../ && make -j 8 && cp picotool /usr/local/bin 
 RUN cd /apps && git clone https://github.com/wtarreau/bootterm.git --depth=1 && \
     cd bootterm && make -j 8 install 
+RUN git clone https://github.com/pguyot/uf2tool.git --depth=1 && \
+    cd uf2tool && rebar3 escriptize && \
+    cp _build/default/bin/uf2tool /usr/local/bin
 
 RUN cd /usr/bin && ln -s /usr/bin/objdump objdump-multiarch && ln -s /usr/bin/nm nm-multiarch 
 
