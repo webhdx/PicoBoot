@@ -10,7 +10,7 @@ execute_process(COMMAND ${GIT_EXECUTABLE} describe --tags --always --dirty
 	OUTPUT_STRIP_TRAILING_WHITESPACE)
 string(REGEX REPLACE "v([0-9]+\\.[0-9]+).*" "\\1" CMAKE_GIT_REPO_VERSION ${GIT_REPO_VERSION})
 string(REGEX REPLACE "^(.......-.*)|(.......)$" "0.0.0" CMAKE_GIT_REPO_VERSION ${CMAKE_GIT_REPO_VERSION})
-configure_file("src/version.h.in" "src/version.h")
+configure_file("src/version.h.in" "${CMAKE_CURRENT_SOURCE_DIR}/src/version.h")
 message("GIT_REPO_VERSION is ${GIT_REPO_VERSION}")
 message("CMAKE_GIT_REPO_VERSION is ${CMAKE_GIT_REPO_VERSION}")
 
@@ -21,6 +21,8 @@ project(picoboot LANGUAGES C CXX ASM VERSION ${CMAKE_GIT_REPO_VERSION})
 
 # Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/dist)
 
 add_executable(picoboot
         src/picoboot.c
@@ -59,5 +61,3 @@ function(merge_uf2 NAME BASE_TARGET INPUTS)
                 DEPENDS ${BASE_TARGET} ${INPUTS}
                 COMMAND_EXPAND_LISTS)
 endfunction()
-
-merge_uf2(picoboot_full picoboot "${CMAKE_CURRENT_LIST_DIR}/payload.uf2")
