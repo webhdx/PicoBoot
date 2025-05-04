@@ -40,21 +40,19 @@ jobs:
     - uses: robinraju/release-downloader@v1
       id: gekkoboot-download
       with:
-        repository: 'webhdx/iplboot'
+        repository: 'webhdx/gekkoboot'
         latest: true
         fileName: '*.zip'
         out-file-path: gekkoboot
         extract: true
 
-    - name: Copy gekkoboot uf2 payload
+    - name: Copy gekkoboot.dol
       run: |
         cd gekkoboot
-        if [ -f "gekkoboot_pico.uf2" ]; then
-            cp gekkoboot_pico.uf2 ${{ github.workspace }}/payload.uf2
-        elif [ -f "iplboot_pico.uf2" ]; then
-            cp iplboot_pico.uf2 ${{ github.workspace }}/payload.uf2
+        if [ -f "gekkoboot.dol" ]; then
+            cp gekkoboot.dol ${{ github.workspace }}/gekkoboot.dol
         else
-            echo "Neither gekkoboot_pico.uf2 nor iplboot_pico.uf2 found."
+            echo "gekkoboot.dol not found"
             exit 1
         fi
 
@@ -64,14 +62,13 @@ jobs:
         imageName: ghcr.io/webhdx/picoboot
         cacheFrom: ghcr.io/webhdx/picoboot
         runCmd: |
-          cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE .
-          make
+          tools/build.sh
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
         name: picoboot-${{ steps.vars.outputs.sha_short }}
-        path: |
-          picoboot_full.uf2
-          picoboot.uf2
-          payload.uf2
+        path: dist/
+
+    - name: Add build summary
+      run: echo "$(cat .github/build_summary.md)" >> $GITHUB_STEP_SUMMARY
