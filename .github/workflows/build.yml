@@ -1,4 +1,4 @@
-name: Build
+name: Build PicoBoot
 on:
   workflow_run:
     workflows: ["Dev Container Build and Push Image"]
