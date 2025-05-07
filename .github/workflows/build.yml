@@ -1,12 +1,13 @@
 name: Build PicoBoot
 on:
-  workflow_run:
-    workflows: ["Dev Container Build and Push Image"]
-    types:
-      - completed
+  push:
+    branches:
+      - '**'
+  pull_request:
     branches:
       - main
-  pull_request: {}
+
+  workflow_call:
 
 env:
   # Customize the CMake build
@@ -15,7 +16,6 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') || github.event_name == 'pull_request'
     steps:
     - name: Clean workspace
       run: |
