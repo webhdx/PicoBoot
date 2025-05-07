@@ -6,7 +6,7 @@ on:
       version:
         description: 'Version to tag'
         required: true
-        default: 'v0.4'
+        default: 'v0.5.0'
         type: string
       is_draft:
         description: 'Is draft release?'
@@ -88,7 +88,9 @@ jobs:
         run: |
           echo '```' >> release-description.md
           cd dist/
-          sha256sum picoboot_full.uf2 >> ../release-description.md
+          sha256sum picoboot_full_pico.uf2 >> ../release-description.md
+          sha256sum picoboot_full_pico2.uf2 >> ../release-description.md
+          sha256sum payload_universal.uf2 >> ../release-description.md
           cd ../
           echo '```' >> release-description.md
       
@@ -97,24 +99,27 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create tag
+        uses: actions/github-script@v7
         with:
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/tags/${{ github.event.inputs.version }}',
+              sha: context.sha
+            })
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        if: github.ref_type == 'tag'
+        with:
+          name: ${{ steps.determine_name.outputs.name }}
           tag_name: ${{ github.event.inputs.version }}
-          release_name: ${{ steps.determine_name.outputs.name }}
-          body_path: ${{ github.workspace }}/release-description.md
           draft: ${{ github.event.inputs.is_draft }}
           prerelease: ${{ github.event.inputs.is_prerelease }}
-
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ github.workspace }}/dist/picoboot_full.uf2
-          asset_name: picoboot_full.uf2
-          asset_content_type: application/octet-stream
+          body_path: ${{ github.workspace }}/release-description.md
+          files: |
+            dist/picoboot_full_pico.uf2
+            dist/picoboot_full_pico2.uf2
+            dist/payload_universal.uf2
