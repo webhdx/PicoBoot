@@ -61,6 +61,7 @@ jobs:
       with:
         imageName: ghcr.io/webhdx/picoboot
         cacheFrom: ghcr.io/webhdx/picoboot
+        push: never
         runCmd: |
           tools/build.sh
 
