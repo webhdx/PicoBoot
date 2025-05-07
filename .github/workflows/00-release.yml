@@ -99,20 +99,8 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
 
-      - name: Create tag
-        uses: actions/github-script@v7
-        with:
-          script: |
-            github.rest.git.createRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: 'refs/tags/${{ github.event.inputs.version }}',
-              sha: context.sha
-            })
-
       - name: Create Release
         uses: softprops/action-gh-release@v2
-        if: github.ref_type == 'tag'
         with:
           name: ${{ steps.determine_name.outputs.name }}
           tag_name: ${{ github.event.inputs.version }}
