@@ -11,8 +11,7 @@ NC='\033[0m'
 platforms=("rp2040" "rp2350")
 boards=("pico_w" "pico2_w")
 boards_arch=("pico" "pico2")
-families=("pico_w" "pico2_w")
-output_files=("picoboot_full_pico.uf2" "picoboot_full_pico2.uf2")
+families=("rp2040" "rp2350-arm-s")
 build_type="RelWithDebInfo"
 
 num_configs=${#platforms[@]}
@@ -44,8 +43,9 @@ for (( i=0; i<num_configs; i++ )); do
         platform="${platforms[i]}"
         board="${boards[i]}"
         board_arch="${boards_arch[i]}"
-        output_file="${output_files[i]}"
+        output_file="picoboot_full_${board_arch}.uf2"
         build_dir="${platform}_${board}"
+        family="${families[i]}"
 
         echo -e "${BLUE}##########################################################${NC}"
         echo -e "🚀 ${YELLOW}Building for Platform:${NC} ${GREEN}${platform}${NC}, ${YELLOW}Board:${NC} ${GREEN}${board}${NC}"
@@ -62,9 +62,15 @@ for (( i=0; i<num_configs; i++ )); do
         echo -e "\n🔨 ${YELLOW}Copying to dist...${NC}"
         cp build/${build_dir}/picoboot.uf2 dist/picoboot_${board_arch}.uf2
 
+        if [ "${platform}" == "rp2350" ]; then
+            # RP2350 workaround for invalid core+payload uf2 file
+            echo -e "\n🔨 ${YELLOW}RP2350 workaround: Building core uf2 file...${NC}"
+            picotool uf2 convert build/${build_dir}/dist/picoboot.bin build/${build_dir}/picoboot.uf2 --family rp2350-arm-s
+        fi
+
         echo -e "\n🔨 ${YELLOW}Merging binaries...${NC}"
 
-        uf2tool join -o dist/${output_file} build/${build_dir}/picoboot.uf2 dist/payload_${board_arch}.uf2 --family ${platform}
+        uf2tool join -o dist/${output_file} build/${build_dir}/picoboot.uf2 dist/payload_${board_arch}.uf2 --family ${family}
 
         echo -e "✨ ${GREEN}Build finished for ${platform} (${board})!${NC}\n"
 done
