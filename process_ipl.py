@@ -73,6 +73,8 @@ def pack_uf2(data, base_address, family):
     if family == "rp2040":
         family_id = 0xE48BFF56 # RP2040
     elif family == "rp2350":
+        family_id = 0xE48BFF59 # RP2350-ARM-S
+    elif family == "data":
         family_id = 0xE48BFF58 # DATA family ID compatible with RP2350
     else:
         raise ValueError(f"Unknown family: {family}")
