@@ -43,10 +43,10 @@ if [ ! -d "dist" ]; then
 fi
 
 echo -e "\n🔨 ${YELLOW}Building payload uf2 file for Pico...${NC}"
-./process_ipl.py dist/payload_pico.uf2 payload.dol rp2040
+tools/process_ipl.py dist/payload_pico.uf2 payload.dol rp2040
 
 echo -e "\n🔨 ${YELLOW}Building payload uf2 file for Pico 2...${NC}"
-./process_ipl.py dist/payload_pico2.uf2 payload.dol rp2350
+tools/process_ipl.py dist/payload_pico2.uf2 payload.dol rp2350
 
 echo -e "\n🔨 ${YELLOW}Building universal payload uf2 file...${NC}"
 cat dist/payload_pico.uf2 dist/payload_pico2.uf2 > dist/payload_universal.uf2
