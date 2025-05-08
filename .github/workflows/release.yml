@@ -87,7 +87,7 @@ jobs:
           toTag: ${{ github.event.inputs.version }} # Explicitly set the current tag
           configurationJson: |
             {
-              "template": "#{{CHANGELOG}}",
+              "template": "#{{UNCATEGORIZED}}",
               "commit_template": "* {{SUBJECT}} (`{{SHORT_HASH}}`)",
               "empty_template": "_No notable changes in this version._",
               "categories": []
