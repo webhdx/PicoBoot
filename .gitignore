@@ -22,4 +22,5 @@ picoboot.hex
 *.uf2
 picoboot.pio.h
 gekkoboot.dol
+payload.dol
 src/version.h
