@@ -78,11 +78,33 @@ jobs:
         with:
           name: picoboot-${{ steps.vars.outputs.sha_short }}
           path: dist/
+
+      - name: Build Changelog
+        id: build_changelog
+        uses: mikepenz/release-changelog-builder-action@v5
+        with:
+          mode: "COMMIT"
+          toTag: ${{ github.event.inputs.version }} # Explicitly set the current tag
+          configurationJson: |
+            {
+              "template": "#{{CHANGELOG}}",
+              "commit_template": "* {{SUBJECT}} (`{{SHORT_HASH}}`)",
+              "empty_template": "_No notable changes in this version._",
+              "categories": []
+            }
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: Prepare release description 
-        run: | 
-          touch release-description.md
-          echo "${{ github.event.inputs.release_description }}" >> release-description.md
+      - name: Prepare release description
+        env:
+          DESCRIPTION: ${{ github.event.inputs.release_description }}
+          RELEASE_NAME: ${{ steps.determine_name.outputs.name }}
+          CHANGELOG: ${{ steps.build_changelog.outputs.changelog }}
+        run: |
+          content=$(cat .github/release_description.md)
+          content=${content//@DESCRIPTION@/$DESCRIPTION}
+          content=${content//@CHANGELOG@/$CHANGELOG}
+          echo "$content" > release-description.md
 
       - name: Calculate artifact checksum 
         run: |
@@ -106,7 +128,6 @@ jobs:
           draft: ${{ github.event.inputs.is_draft }}
           prerelease: ${{ github.event.inputs.is_prerelease }}
           body_path: ${{ github.workspace }}/release-description.md
-          generate_release_notes: true
           files: |
             dist/picoboot_full_pico.uf2
             dist/picoboot_full_pico2.uf2
