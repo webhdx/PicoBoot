@@ -90,7 +90,6 @@ jobs:
           cd dist/
           sha256sum picoboot_full_pico.uf2 >> ../release-description.md
           sha256sum picoboot_full_pico2.uf2 >> ../release-description.md
-          sha256sum payload_universal.uf2 >> ../release-description.md
           cd ../
           echo '```' >> release-description.md
       
@@ -107,7 +106,7 @@ jobs:
           draft: ${{ github.event.inputs.is_draft }}
           prerelease: ${{ github.event.inputs.is_prerelease }}
           body_path: ${{ github.workspace }}/release-description.md
+          generate_release_notes: true
           files: |
             dist/picoboot_full_pico.uf2
             dist/picoboot_full_pico2.uf2
-            dist/payload_universal.uf2
