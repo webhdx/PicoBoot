@@ -52,7 +52,7 @@ jobs:
       run: |
         cd gekkoboot
         if [ -f "gekkoboot.dol" ]; then
-            cp gekkoboot.dol ${{ github.workspace }}/gekkoboot.dol
+            cp gekkoboot.dol ${{ github.workspace }}/payload.dol
         else
             echo "gekkoboot.dol not found"
             exit 1

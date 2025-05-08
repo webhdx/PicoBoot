@@ -84,7 +84,7 @@ jobs:
         uses: mikepenz/release-changelog-builder-action@v5
         with:
           mode: "COMMIT"
-          toTag: ${{ github.event.inputs.version }} # Explicitly set the current tag
+          toTag: ${{ github.event.inputs.version }}
           configurationJson: |
             {
               "template": "#{{UNCATEGORIZED}}",

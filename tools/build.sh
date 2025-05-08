@@ -1,4 +1,16 @@
 #!/bin/bash
+# -----------------------------------------------------------------------
+# build.sh - Builds PicoBoot firmware files for different platforms
+# -----------------------------------------------------------------------
+# Purpose: 
+#   Builds PicoBoot firmware files for both Raspberry Pi Pico and Pico 2 
+#   platforms. Processes gekkoboot.dol into payload files and creates 
+#   universal payload that works on both boards.
+#   Outputs uf2 files into dist/ directory.
+#
+# Usage: 
+#   ./build.sh
+# -----------------------------------------------------------------------
 
 set -e
 
@@ -16,14 +28,14 @@ build_type="RelWithDebInfo"
 
 num_configs=${#platforms[@]}
 
-if [ ! -f "gekkoboot.dol" ]; then
-    echo -e "${RED}Error: gekkoboot.dol file not found${NC}"
+if [ ! -f "payload.dol" ]; then
+    echo -e "${RED}Error: payload.dol file not found${NC}"
     exit 1
 fi
 
 echo -e "${BLUE}##########################################################${NC}"
 echo -e "🚀 ${YELLOW}Generating payload uf2 files:${NC}"
-echo -e "📂 ${YELLOW}Build directory:${NC} ${GREEN}build/gekkoboot${NC}"
+echo -e "📂 ${YELLOW}Input file:${NC} ${GREEN}payload.dol${NC}"
 echo -e "${BLUE}##########################################################${NC}"
 
 if [ ! -d "dist" ]; then
@@ -31,10 +43,10 @@ if [ ! -d "dist" ]; then
 fi
 
 echo -e "\n🔨 ${YELLOW}Building payload uf2 file for Pico...${NC}"
-./process_ipl.py dist/payload_pico.uf2 gekkoboot.dol rp2040
+./process_ipl.py dist/payload_pico.uf2 payload.dol rp2040
 
 echo -e "\n🔨 ${YELLOW}Building payload uf2 file for Pico 2...${NC}"
-./process_ipl.py dist/payload_pico2.uf2 gekkoboot.dol rp2350
+./process_ipl.py dist/payload_pico2.uf2 payload.dol rp2350
 
 echo -e "\n🔨 ${YELLOW}Building universal payload uf2 file...${NC}"
 cat dist/payload_pico.uf2 dist/payload_pico2.uf2 > dist/payload_universal.uf2
@@ -63,13 +75,15 @@ for (( i=0; i<num_configs; i++ )); do
         cp build/${build_dir}/picoboot.uf2 dist/picoboot_${board_arch}.uf2
 
         if [ "${platform}" == "rp2350" ]; then
-            # RP2350 workaround for invalid core+payload uf2 file
             echo -e "\n🔨 ${YELLOW}RP2350 workaround: Building core uf2 file...${NC}"
             picotool uf2 convert build/${build_dir}/dist/picoboot.bin build/${build_dir}/picoboot.uf2 --family rp2350-arm-s
+        else
+            echo -e "\n🔨 ${YELLOW}RP2040 workaround: Padding binary to 4k block size...${NC}"
+            tools/rp2040_4k_align.sh build/${build_dir}/dist/picoboot.bin build/${build_dir}/dist/picoboot_padded.bin
+            picotool uf2 convert build/${build_dir}/dist/picoboot_padded.bin build/${build_dir}/picoboot.uf2 --family rp2040
         fi
 
         echo -e "\n🔨 ${YELLOW}Merging binaries...${NC}"
-
         uf2tool join -o dist/${output_file} build/${build_dir}/picoboot.uf2 dist/payload_${board_arch}.uf2 --family ${family}
 
         echo -e "✨ ${GREEN}Build finished for ${platform} (${board})!${NC}\n"
