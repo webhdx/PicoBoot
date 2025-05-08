@@ -61,7 +61,7 @@ void main()
     stdio_init_all();
     
     while (!tud_cdc_connected()) {
-        sleep_ms(100);
+        // wait for USB
     }
 
     adc_init();
