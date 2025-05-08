@@ -58,14 +58,24 @@ bad:
 
 void main()
 {
+    stdio_init_all();
+    
+    while (!tud_cdc_connected()) {
+        // wait for USB
+    }
+
     adc_init();
     s_board_type = hw_detect_board_type();
+
+    printf("PicoBoot (%s) by webhdx (c) 2025\n", FW_VER_STRING);
+    printf("Board Type: %s\n", hw_board_type_to_string(s_board_type));
 
     status_led_init(s_board_type);
     status_led_on();
 
     size_t payload_size = validate_payload();
     if (payload_size == SIZE_MAX) {
+        printf("PicoBoot: Invalid payload. Entering infinite loop.\n");
         while (true) {
             sleep_ms(500);
             status_led_toggle();
@@ -141,6 +151,8 @@ void main()
     // Start PIO state machines
     pio_sm_set_enabled(pio, transfer_start_sm, true);
     pio_sm_set_enabled(pio, clocked_output_sm, true);
+
+    printf("PicoBoot: Finished injecting payload. Entering infinite loop.\n");
 
     while (true) {
         tight_loop_contents();
