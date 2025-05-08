@@ -88,7 +88,6 @@ jobs:
           configurationJson: |
             {
               "template": "#{{UNCATEGORIZED}}",
-              "commit_template": "* {{SUBJECT}} (`{{SHORT_HASH}}`)",
               "empty_template": "_No notable changes in this version._",
               "categories": []
             }
