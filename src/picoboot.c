@@ -1,27 +1,34 @@
 /**
- * Copyright (c) 2024 Maciej Kobus
+ * Copyright (c) 2025 Maciej Kobus
  *
  * SPDX-License-Identifier: GPL-2.0-only
  */
 
 #include <stdio.h>
-#include "pico/stdlib.h"
-#include "hardware/pio.h"
+#include <tusb.h>
+
+#include "hardware/adc.h"
 #include "hardware/clocks.h"
 #include "hardware/dma.h"
+#include "hardware/pio.h"
 #include "hardware/structs/bus_ctrl.h"
-#include "pio.h"
-#include "picoboot.pio.h"
-#include "endian.h"
+#include "pico/stdlib.h"
 
-const uint PIN_LED = 25;                // Status LED
+#include "endian.h"
+#include "hw.h"
+#include "picoboot.pio.h"
+#include "pio.h"
+#include "status_led.h"
+#include "version.h"
 
 extern const uint32_t __payload[];
 extern const uint32_t __payload_end[];
 
-const uint32_t payload_magic0 = 0x49504C42; // "IPLB"
-const uint32_t payload_magic1 = 0x4F4F5420; // "OOT "
-const uint32_t payload_magic2 = 0x5049434F; // "PICO"
+static const uint32_t payload_magic0 = 0x49504C42; // "IPLB"
+static const uint32_t payload_magic1 = 0x4F4F5420; // "OOT "
+static const uint32_t payload_magic2 = 0x5049434F; // "PICO"
+
+static hw_board_type_t s_board_type;
 
 size_t validate_payload() {
     if (BigEndian32(__payload[0]) != payload_magic0) {
@@ -51,18 +58,21 @@ bad:
 
 void main()
 {
-    // Initialize and light up builtin LED, it will basically
-    // act as a power LED.
-    // TODO: Use the LED to signalize system faults?
-    gpio_init(PIN_LED);
-    gpio_set_dir(PIN_LED, GPIO_OUT);
-    gpio_put(PIN_LED, true);
+    stdio_init_all();
+    adc_init();
+    s_board_type = hw_detect_board_type();
+
+    printf("PicoBoot (%s) by webhdx (c) 2025\n", FW_VER_STRING);
+    printf("Board Type: %s\n", hw_board_type_to_string(s_board_type));
 
     size_t payload_size = validate_payload();
     if (payload_size == SIZE_MAX) {
+        printf("PicoBoot: Invalid payload. Entering infinite loop.\n");
+        status_led_init(s_board_type);
+
         while (true) {
             sleep_ms(500);
-            gpio_xor_mask(1 << PIN_LED);
+            status_led_toggle();
         }
     }
 
@@ -135,6 +145,11 @@ void main()
     // Start PIO state machines
     pio_sm_set_enabled(pio, transfer_start_sm, true);
     pio_sm_set_enabled(pio, clocked_output_sm, true);
+
+    printf("PicoBoot: Finished injecting payload. Entering infinite loop.\n");
+
+    status_led_init(s_board_type);
+    status_led_on();
 
     while (true) {
         tight_loop_contents();

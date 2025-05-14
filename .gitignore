@@ -5,6 +5,7 @@ _deps
 
 # Build environment
 build/
+dist/
 CMakeFiles/
 elf2uf2/
 generated/
@@ -20,3 +21,6 @@ picoboot.elf.map
 picoboot.hex
 *.uf2
 picoboot.pio.h
+gekkoboot.dol
+payload.dol
+src/version.h

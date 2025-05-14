@@ -1,3 +1,22 @@
-#pragma once
+/**
+ * Copyright (c) 2025 Maciej Kobus
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
 
-#define PICOBOOT_VERSION "${GIT_REPO_VERSION}"
+#ifndef VERSION_H
+#define VERSION_H
+
+#include <stdint.h>
+
+#define FW_VER_STRING "${FW_VER_STRING}"
+
+static const uint8_t FW_VER_MAJOR = ${FW_VER_MAJOR};
+static const uint8_t FW_VER_MINOR = ${FW_VER_MINOR};
+static const uint8_t FW_VER_PATCH = ${FW_VER_PATCH};
+
+static const uint32_t FW_VER_FULL = ((uint32_t)FW_VER_MAJOR << 24) |
+                                     ((uint32_t)FW_VER_MINOR << 16) |
+                                     ((uint32_t)FW_VER_PATCH <<  8);
+
+#endif // VERSION_H

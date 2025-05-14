@@ -6,7 +6,7 @@ on:
       version:
         description: 'Version to tag'
         required: true
-        default: 'v0.4'
+        default: 'v0.5.0'
         type: string
       is_draft:
         description: 'Is draft release?'
@@ -47,7 +47,7 @@ jobs:
 
   build:
     needs: tag
-    uses: ./.github/workflows/10-build.yml
+    uses: ./.github/workflows/build.yml
 
   release:
     runs-on: ubuntu-latest
@@ -78,17 +78,40 @@ jobs:
         with:
           name: picoboot-${{ steps.vars.outputs.sha_short }}
           path: dist/
+
+      - name: Build Changelog
+        id: build_changelog
+        uses: mikepenz/release-changelog-builder-action@v5
+        with:
+          mode: "COMMIT"
+          toTag: ${{ github.event.inputs.version }}
+          configurationJson: |
+            {
+              "template": "#{{UNCATEGORIZED}}",
+              "commit_template": "* #{{TITLE}} by @#{{AUTHOR}} (#{{MERGE_SHA}})",
+              "empty_template": "_No notable changes in this version._",
+              "categories": []
+            }
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: Prepare release description 
-        run: | 
-          touch release-description.md
-          echo "${{ github.event.inputs.release_description }}" >> release-description.md
+      - name: Prepare release description
+        env:
+          DESCRIPTION: ${{ github.event.inputs.release_description }}
+          RELEASE_NAME: ${{ steps.determine_name.outputs.name }}
+          CHANGELOG: ${{ steps.build_changelog.outputs.changelog }}
+        run: |
+          content=$(cat .github/release_description.md)
+          content=${content//@DESCRIPTION@/$DESCRIPTION}
+          content=${content//@CHANGELOG@/$CHANGELOG}
+          echo "$content" > release-description.md
 
       - name: Calculate artifact checksum 
         run: |
           echo '```' >> release-description.md
           cd dist/
-          sha256sum picoboot_full.uf2 >> ../release-description.md
+          sha256sum picoboot_full_pico.uf2 >> ../release-description.md
+          sha256sum picoboot_full_pico2.uf2 >> ../release-description.md
           cd ../
           echo '```' >> release-description.md
       
@@ -98,23 +121,13 @@ jobs:
           git config --global user.email "actions@github.com"
 
       - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v2
         with:
+          name: ${{ steps.determine_name.outputs.name }}
           tag_name: ${{ github.event.inputs.version }}
-          release_name: ${{ steps.determine_name.outputs.name }}
-          body_path: ${{ github.workspace }}/release-description.md
           draft: ${{ github.event.inputs.is_draft }}
           prerelease: ${{ github.event.inputs.is_prerelease }}
-
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ github.workspace }}/dist/picoboot_full.uf2
-          asset_name: picoboot_full.uf2
-          asset_content_type: application/octet-stream
+          body_path: ${{ github.workspace }}/release-description.md
+          files: |
+            dist/picoboot_full_pico.uf2
+            dist/picoboot_full_pico2.uf2
