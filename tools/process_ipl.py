@@ -69,16 +69,7 @@ def flatten_dol(data):
     # Entry point, load address, memory image
     return entry, dol_min, img
 
-def pack_uf2(data, base_address, family):
-    if family == "rp2040":
-        family_id = 0xE48BFF56 # RP2040
-    elif family == "rp2350":
-        family_id = 0xE48BFF59 # RP2350-ARM-S
-    elif family == "data":
-        family_id = 0xE48BFF58 # DATA family ID compatible with RP2350
-    else:
-        raise ValueError(f"Unknown family: {family}")
-
+def pack_uf2(data, base_address, family_ids):
     ret = bytearray()
 
     seq = 0
@@ -89,19 +80,20 @@ def pack_uf2(data, base_address, family):
         chunk = data[:chunk_size]
         data = data[chunk_size:]
 
-        ret += struct.pack(
-            "< 8I 476B I",
-            0x0A324655, # Magic 1 "UF2\n"
-            0x9E5D5157, # Magic 2
-            0x00002000, # Flags (family ID present)
-            addr,
-            chunk_size,
-            seq,
-            total_chunks,
-            family_id, # Board family: Raspberry Pi RP2040
-            *chunk.ljust(476, b"\x00"),
-            0x0AB16F30, # Final magic
-        )
+        for family_id in family_ids:
+            ret += struct.pack(
+                "< 8I 476s I",
+                0x0A324655, # Magic 1 "UF2\n"
+                0x9E5D5157, # Magic 2
+                0x00002000, # Flags (family ID present)
+                addr,
+                chunk_size,
+                seq,
+                total_chunks,
+                family_id,
+                chunk,
+                0x0AB16F30, # Final magic
+            )
 
         seq += 1
         addr += chunk_size
@@ -110,12 +102,11 @@ def pack_uf2(data, base_address, family):
 
 def main():
     if len(sys.argv) not in range(3, 4 + 1):
-        print(f"Usage: {sys.argv[0]} <output> <executable> [<uf2_family>]")
+        print(f"Usage: {sys.argv[0]} <output> <executable>")
         return 1
 
     output = sys.argv[1]
     executable = sys.argv[2]
-    family = sys.argv[3]
 
     with open(executable, "rb") as f:
         exe = bytearray(f.read())
@@ -161,7 +152,17 @@ def main():
         out = header + img
 
     elif output.endswith(".uf2"):
-        out = pack_uf2(header + img, 0x10080000, family)
+        if len(sys.argv) > 3:
+            if sys.argv[3] == "rp2040":
+                family_ids = [0xE48BFF56]
+            elif sys.argv[3] == "rp2350":
+                family_ids = [0xE48BFF59]
+            else:
+                raise ValueError(f"Unknown family: {sys.argv[3]}")
+        else:
+            family_ids = [0xE48BFF56, 0xE48BFF59]
+
+        out = pack_uf2(header + img, 0x10080000, family_ids)
 
     else:
         print("Unknown output format")

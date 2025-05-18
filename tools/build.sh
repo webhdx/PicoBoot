@@ -34,7 +34,7 @@ if [ ! -f "payload.dol" ]; then
 fi
 
 echo -e "${BLUE}##########################################################${NC}"
-echo -e "🚀 ${YELLOW}Generating payload uf2 files:${NC}"
+echo -e "🚀 ${YELLOW}Generating payload UF2 files:${NC}"
 echo -e "📂 ${YELLOW}Input file:${NC} ${GREEN}payload.dol${NC}"
 echo -e "${BLUE}##########################################################${NC}"
 
@@ -48,8 +48,8 @@ tools/process_ipl.py dist/payload_pico.uf2 payload.dol rp2040
 echo -e "\n🔨 ${YELLOW}Building payload uf2 file for Pico 2...${NC}"
 tools/process_ipl.py dist/payload_pico2.uf2 payload.dol rp2350
 
-echo -e "\n🔨 ${YELLOW}Building universal payload uf2 file...${NC}"
-cat dist/payload_pico.uf2 dist/payload_pico2.uf2 > dist/payload_universal.uf2
+echo -e "\n🔨 ${YELLOW}Building universal payload UF2 file...${NC}"
+tools/process_ipl.py dist/payload_universal.uf2 payload.dol
 
 for (( i=0; i<num_configs; i++ )); do
         platform="${platforms[i]}"
